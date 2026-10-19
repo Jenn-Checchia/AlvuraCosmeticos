@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alvura Cosméticos - Catálogo Artesanal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Topo / Barra de Navegação -->
+  <header class="header">
+    <div class="container header-content">
+      <a href="#" class="logo">Alvura</a>
+      <ul class="nav-links">
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="#sobre">A Marca</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+      <button class="cart-button" title="Ver Pedido">
+        🛒
+      </button>
+    </div>
+  </header>
+
+  <!-- Secção de Abertura -->
+  <section class="hero">
+    <div class="container">
+      <h1>Cosmética Artesanal & Bem-Estar</h1>
+      <p>Produtos feitos à mão com ceras vegetais, essências delicadas e cuidado diário.</p>
+    </div>
+  </section>
+
+  <!-- Secção do Catálogo -->
+  <main class="container" id="catalogo">
+    <!-- Filtros de Seleção -->
+    <div class="categories-filter">
+      <button class="filter-pill active">Todos</button>
+      <button class="filter-pill">Velas Aromáticas</button>
+      <button class="filter-pill">Sabonetes</button>
+      <button class="filter-pill">Hidratantes</button>
+      <button class="filter-pill">Kits Presente</button>
+    </div>
+
+    <!-- Grade com os Cartões de Produtos -->
+    <div class="catalog-grid">
+      
+      <!-- Exemplo de Produto 1 -->
+      <article class="card-product">
+        <div class="card-img-wrapper">
+          <span class="badge-status">Disponível</span>
+          <img src="assets/vela-cha-branco.jpg" alt="Vela Aromática de Chá Branco">
+        </div>
+        <div class="card-body">
+          <span class="card-category">Velas Aromáticas</span>
+          <h2 class="card-title">Vela Chá Branco (180g)</h2>
+          <p class="card-desc">Cera de coco 100% vegetal com notas florais e toque cítrico suave.</p>
+          <div class="card-footer">
+            <span class="card-price">R$ 58,00</span>
+            <button class="btn-add">Pedir</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Exemplo de Produto 2 -->
+      <article class="card-product">
+        <div class="card-img-wrapper">
+          <span class="badge-status">Sob Encomenda</span>
+          <img src="assets/sabonete-argila.jpg" alt="Sabonete de Argila Branca">
+        </div>
+        <div class="card-body">
+          <span class="card-category">Sabonetes</span>
+          <h2 class="card-title">Sabonete Argila Branca</h2>
+          <p class="card-desc">Higienização suave com óleos essenciais para peles sensíveis.</p>
+          <div class="card-footer">
+            <span class="card-price">R$ 22,00</span>
+            <button class="btn-add">Pedir</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+</body>
+</html>
