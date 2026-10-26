@@ -1,0 +1,36 @@
+:root {
+  /* Tons de Fundo (Creme / Baunilha Quente do Figma) */
+  --bg-main: #FAF5EB;          /* Fundo principal da página */
+  --bg-card-beige: #F3EAD8;    /* Fundo dos cards (como o card da logo Alvura) */
+  --bg-white: #FFFDF9;         /* Branco levemente aquecido dos selos e depoimentos */
+
+  /* Cores de Destaque e Marca */
+  --color-burgundy: #6D1A26;   /* Bordô / Vinho escuro (rótulo Cereja e Avelã / caixa) */
+  --color-burgundy-hover: #52111B;
+  --color-sun-gold: #F3B94D;   /* Amarelo dourado do sol da logo Alvura */
+  --color-amber: #C87D32;      /* Tom mel / âmbar */
+
+  /* Tipografia */
+  --text-dark: #231C18;        /* Café quase preto para títulos e textos principais */
+  --text-muted: #6E6259;       /* Marrom acinzentado quente para textos secundários */
+  --border-subtle: rgba(35, 28, 24, 0.1);
+
+  /* Fontes */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+
+  /* Arredondamentos */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --radius-pill: 999px;
+
+  /* Compatibilidade com os nomes usados no style.css */
+:root {
+  --bg-page: var(--bg-main);
+  --bg-warm-card: var(--bg-card-beige);
+
+  --color-cherry: var(--color-burgundy);
+  --color-cherry-hover: var(--color-burgundy-hover);
+}
+}
