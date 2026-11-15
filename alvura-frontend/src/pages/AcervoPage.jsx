@@ -14,7 +14,7 @@ const OPCOES_FILTRO = {
   ],
 };
 
-export default function AcervoPage({ onAddToCart, onSelectProduto }) {
+export default function AcervoPage({ onAddToCart, onSelectProduto, onAbrirEncomendas }) {
   const [busca, setBusca] = useState("");
   const [tiposSelecionados, setTiposSelecionados] = useState([]);
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
@@ -240,6 +240,20 @@ export default function AcervoPage({ onAddToCart, onSelectProduto }) {
                 ✕
               </button>
             )}
+          </div>
+            
+            <div className="acervo-atacado-banner">
+            <p>
+              Vai presentear em casamentos, festas ou eventos corporativos?{" "}
+              <strong>Produzimos lotes sob medida.</strong>
+            </p>
+            <button
+              type="button"
+              className="acervo-atacado-btn"
+              onClick={() => onAbrirEncomendas && onAbrirEncomendas()}
+            >
+              Consulte condições especiais para atacado →
+            </button>
           </div>
 
           <div className="acervo-results-meta">

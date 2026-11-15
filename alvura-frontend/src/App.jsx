@@ -8,6 +8,7 @@ import FaqPage from './pages/FaqPage';
 import ContatoPage from "./pages/ContatoPage";
 import AcervoPage from "./pages/AcervoPage";
 import ProdutoModal from "./components/ProdutoModal";
+import EncomendasPage from "./pages/EncomendasPage";
 import { useState } from 'react';
 
 const TELEFONE_ALVURA = "5567999999999";
@@ -442,10 +443,23 @@ export default function App() {
               </div>
           </div>
         </section>
+
+       
       
       </>
       )}    {/*Fim da home*/}
     </div>
+
+       {paginaAtual === "encomendas" && (
+          <EncomendasPage
+            onSolicitarOrcamento={(mensagem) => pedirWhatsApp(mensagem)}
+            onVoltarAcervo={() => {
+              setPaginaAtual("acervo");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+        />
+        )}
+
 
      {paginaAtual === "acervo" && (
           <AcervoPage
@@ -455,6 +469,10 @@ export default function App() {
               )
             }
             onSelectProduto={setProdutoSelecionado}
+                        onAbrirEncomendas={() => {
+              setPaginaAtual("encomendas");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           />
         )}
 

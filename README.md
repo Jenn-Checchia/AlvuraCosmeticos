@@ -53,7 +53,8 @@ E-commerce artesanal desenvolvido em **React + Vite** para a marca **Alvura Natu
 alvura-cosmeticos/
 ├── public/
 │   └── assets/
-│       └── products/        # Imagens dos produtos e ilustrações botânicas
+│   │    └── products/        # Imagens dos produtos e ilustrações botânicas
+│   │   └── assets/           # Ilustrações do site 
 ├── src/
 │   ├── components/
 │   │   ├── Header.jsx       # Cabeçalho fixo com navegação principal

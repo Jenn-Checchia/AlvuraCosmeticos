@@ -1,0 +1,509 @@
+.encomendas-page {
+  padding: 20px 0px 104px;
+  color: var(--text-dark);
+  zoom: 1.15; /* Aumenta proporcionalmente toda a escala tipográfica e visual da página em 15% */
+}
+
+/* Barra superior com botão Voltar alinhado à esquerda (IHC) */
+.encomendas-top-nav {
+  padding: 0 32px 18px;
+  display: flex;
+  align-items: center;
+}
+
+.encomendas-back-link {
+  border: none;
+  background: transparent;
+  color: #7C3B00;
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.encomendas-back-link:hover {
+  opacity: 0.78;
+  transform: translateX(-2px);
+}
+
+/* Grade Principal: Proporções equilibradas (48% / 52%) e mesma altura vertical */
+.encomendas-split-layout {
+  display: grid;
+  grid-template-columns: 0.94fr 1.06fr;
+  gap: 48px;
+  align-items: stretch; /* Faz o painel marrom acompanhar toda a altura vertical da direita */
+}
+
+/* =========================================
+   COLUNA ESQUERDA: PAINEL MARROM + MOLDURA EM FIO DE OURO
+   ========================================= */
+.encomendas-left-panel {
+  position: relative;
+  background-color: #7C3B00;
+  margin-left: calc(50% - 50vw);
+  padding: 44px 36px 44px max(32px, calc(50vw - 50% + 28px));
+  overflow: hidden;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribui foto e cards uniformemente na altura toda */
+  gap: 32px;
+}
+
+/* Moldura dupla fina em fio de ouro */
+.gold-frame-outer {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 0;
+  right: 16px;
+  border-top: 1px solid #D9B45B;
+  border-right: 1px solid #D9B45B;
+  border-bottom: 1px solid #D9B45B;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gold-frame-inner {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  right: 5px;
+  border-top: 1px solid rgba(235, 204, 122, 0.55);
+  border-right: 1px solid rgba(235, 204, 122, 0.55);
+  border-bottom: 1px solid rgba(235, 204, 122, 0.55);
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.gold-frame-outer::before,
+.gold-frame-outer::after {
+  content: "◆";
+  position: absolute;
+  right: 2px;
+  font-size: 0.5rem;
+  line-height: 1;
+  color: #E5C158;
+}
+
+.gold-frame-outer::before {
+  top: 2px;
+}
+
+.gold-frame-outer::after {
+  bottom: 2px;
+}
+
+/* Foto principal com largura proporcional aos cards abaixo */
+.panel-hero-photo {
+  position: relative;
+  z-index: 2;
+  width: calc(100% - 14px);
+  aspect-ratio: 1.65 / 1; /* Formato paisagem mais harmônico e menos pesado */
+  border: 1px solid rgba(235, 200, 110, 0.5);
+  border-radius: 4px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+.panel-hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 3 Cards de Sugestões de Eventos com proporção mais generosa */
+.panel-ocasions-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding-right: 14px;
+  flex-grow: 1; /* Ocupa o restante da altura vertical com elegância */
+}
+
+.ocasion-gold-card {
+  background-color: #FAF5EB;
+  padding: 6px;
+  border-radius: 5px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  display: flex;
+}
+
+.ocasion-inner-frame {
+  width: 100%;
+  border: 1px solid #C99E38;
+  border-radius: 3px;
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.ocasion-num {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #A67B1E;
+  margin-bottom: 8px;
+}
+
+.ocasion-inner-frame h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.ocasion-inner-frame p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   COLUNA DIREITA: TÍTULO EDITORIAL + FORMULÁRIO
+   ========================================= */
+.encomendas-right-content {
+  padding-right: 32px;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.encomendas-editorial-header {
+  margin-bottom: 32px;
+}
+
+.encomendas-eyebrow {
+  display: inline-block;
+  font-size: 0.82rem;
+  letter-spacing: 0.16em;
+  color: #7C3B00;
+  margin-bottom: 12px;
+}
+
+.encomendas-editorial-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--text-dark);
+  margin-bottom: 18px;
+}
+
+.encomendas-editorial-header .title-line-1 {
+  display: block;
+}
+
+/* Recuo sutil (em vez de grande deslocamento) para equilibrar a composição */
+.encomendas-editorial-header .title-line-2 {
+  display: block;
+  padding-left: 18px;
+}
+
+.encomendas-editorial-header p {
+  font-size: 1.1rem;
+  line-height: 1.72;
+  color: var(--text-muted);
+  width: 100%;
+  max-width: none;       /* Remove qualquer trava de largura máxima */
+  text-align: justify;   /* Alinha o texto nas duas margens como texto corrido editorial */
+  hyphens: auto;         /* Evita buracos grandes entre as palavras ao justificar */
+}
+
+/* Quadro inferior: Regras + Simular Orçamento */
+.encomendas-form-box {
+  display: grid;
+  grid-template-columns: 0.78fr 1.22fr;
+  gap: 28px;
+  align-items: start;
+  background-color: rgba(124, 59, 0, 0.045);
+  border: 1px solid rgba(184, 138, 46, 0.45);
+  border-radius: 22px;
+  padding: 30px;
+}
+
+.encomendas-info-col h2 {
+  font-family: var(--font-serif);
+  font-size: 1.82rem;
+  font-weight: 400;
+  line-height: 1.16;
+  color: #7C3B00;
+  margin-bottom: 22px;
+}
+
+.encomendas-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.encomendas-steps li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.91rem;
+  line-height: 1.58;
+  color: var(--text-dark);
+}
+
+.encomendas-steps li::before {
+  content: "✦";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  font-size: 0.8rem;
+  color: #B88A2E;
+}
+
+/* Card do Formulário */
+.encomendas-form-card {
+  background-color: var(--bg-main);
+  border: 1px solid rgba(184, 138, 46, 0.55);
+  border-radius: 18px;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.encomendas-form-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.62rem;
+  font-weight: 500;
+  color: #7C3B00;
+  margin-bottom: 2px;
+}
+
+.enc-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.enc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.enc-field > span {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #7C3B00;
+}
+
+.enc-field input[type="text"],
+.enc-field input[type="date"],
+.enc-field select,
+.enc-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 0.91rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.enc-field input:focus,
+.enc-field select:focus,
+.enc-field textarea:focus {
+  border-color: #B88A2E;
+}
+
+/* Grade de Checkboxes de Aromas */
+.enc-aromas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 12px;
+  padding: 10px 12px;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  border-radius: 10px;
+}
+
+.enc-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  user-select: none;
+}
+
+.enc-checkbox-item input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(124, 59, 0, 0.65);
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.enc-checkbox-item input[type="checkbox"]:checked {
+  background-color: #7C3B00;
+  border-color: #7C3B00;
+}
+
+.enc-checkbox-item input[type="checkbox"]::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  background-color: #FAF5EB;
+  transform: scale(0);
+  transition: transform 0.15s ease;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.enc-checkbox-item input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.enc-submit-btn {
+  margin-top: 4px;
+  padding: 14px 22px;
+  border: 1px solid rgba(235, 200, 110, 0.45);
+  border-radius: 999px;
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  font-family: var(--font-sans);
+  font-size: 0.91rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.enc-submit-btn:hover {
+  background-color: #622E00;
+  transform: translateY(-1px);
+}
+
+/* Banner de chamada dentro do Acervo */
+.acervo-atacado-banner {
+  margin-bottom: 24px;
+  padding: 16px 24px;
+  border: 1px solid rgba(184, 138, 46, 0.5);
+  border-radius: 16px;
+  background-color: rgba(124, 59, 0, 0.055);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.acervo-atacado-banner p {
+  font-size: 0.96rem;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.acervo-atacado-btn {
+  padding: 9px 20px;
+  border: 1px solid #7C3B00;
+  border-radius: 999px;
+  background-color: transparent;
+  color: #7C3B00;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.acervo-atacado-btn:hover {
+  background-color: #7C3B00;
+  color: #FAF5EB;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+@media (max-width: 1180px) {
+  .encomendas-split-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .encomendas-left-panel {
+    margin-left: 0;
+    padding: 36px 28px;
+    border-radius: 18px;
+  }
+
+  .gold-frame-outer {
+    left: 14px;
+    border-left: 1px solid #D9B45B;
+    border-radius: 12px;
+  }
+
+  .gold-frame-inner {
+    left: 5px;
+    border-left: 1px solid rgba(235, 204, 122, 0.55);
+    border-radius: 8px;
+  }
+
+  .panel-hero-photo {
+    width: 100%;
+  }
+
+  .panel-ocasions-grid {
+    padding-right: 0;
+  }
+
+  .encomendas-right-content {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .encomendas-top-nav {
+    padding: 0 12px 14px;
+  }
+
+  .encomendas-editorial-header .title-line-2 {
+    padding-left: 0;
+  }
+
+  .panel-ocasions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .encomendas-form-box {
+    grid-template-columns: 1fr;
+    padding: 22px 18px;
+  }
+
+  .enc-row-2,
+  .enc-aromas-grid {
+    grid-template-columns: 1fr;
+  }
+}
