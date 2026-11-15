@@ -38,12 +38,12 @@ export default function Header({ onCartClick, onNavigate, paginaAtual }) {
         </a>
 
         <a
-          href="#contato"
-          className="topbar-link"
-          onClick={(e) => irParaPagina(e, "home", "contato")}
-        >
-          Contato
-        </a>
+        href="#contato"
+        className={`topbar-link ${paginaAtual === "contato" ? "is-active" : ""}`}
+        onClick={(e) => irParaPagina(e, "contato")}
+      >
+        Contato
+      </a>
       </nav>
 
       <a

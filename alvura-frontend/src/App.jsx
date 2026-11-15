@@ -5,6 +5,7 @@ import ProductCard from './components/ProductCard';
 import { produtos } from './mockdados/produtos';
 import './styles/style.css';
 import FaqPage from './pages/FaqPage';
+import ContatoPage from "./pages/ContatoPage";
 import { useState } from 'react';
 
 const TELEFONE_ALVURA = "5567999999999";
@@ -34,10 +35,10 @@ export default function App() {
       />
 
     
-      {paginaAtual === "faq" ? (
-          <FaqPage />
-        ) : (
-        <>
+      {paginaAtual === "faq" && <FaqPage />}
+      
+      {paginaAtual === "home" && (
+      <>
 
         <HeroBanner onExplorar={rolarParaCatalogo} />
 
@@ -436,6 +437,11 @@ export default function App() {
       )}    {/*Fim da home*/}
     </div>
 
+     
+      {paginaAtual === "contato" && (
+      <ContatoPage onWhatsAppClick={pedirWhatsApp} />
+      )}
+
 
       {/* Seção Newsletter: Cartas da Alvura */}
       <section className="newsletter-gold-strip">
@@ -466,7 +472,7 @@ export default function App() {
         </div>
       </section>
 
-     
+
       {/* Footer Institucional Escuro */}
       <footer className="site-footer-dark">
         <div className="footer-dark-inner">

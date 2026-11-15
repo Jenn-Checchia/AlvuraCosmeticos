@@ -1,0 +1,167 @@
+.contato-full-band {
+  width: 100%;
+  min-height: 82vh; /* Garante uma área vertical bem ampla */
+  display: flex;
+  align-items: center; /* Centraliza o conteúdo verticalmente dentro da faixa marrom */
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  padding: 120px 48px 130px; /* Aumenta o espaço acima e abaixo */
+}
+
+.contato-inner {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 56px;
+  align-items: center;
+}
+
+/* Coluna Esquerda */
+.contato-title-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+
+.contato-title-row h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 5vw, 4.2rem);
+  font-weight: 400;
+  line-height: 1;
+  color: #FAF5EB;
+}
+
+.contato-smiley {
+  color: #FAF5EB;
+  flex-shrink: 0;
+  transform: translateY(-4px);
+}
+
+.contato-subtitle {
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  color: rgba(250, 245, 235, 0.85);
+  margin-bottom: 48px;
+}
+
+/* Lista de balões de fala */
+.contato-channels {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-left: 20px;
+}
+
+.contato-channel-item {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  text-decoration: none;
+  color: #FAF5EB;
+  transition: transform 0.25s ease;
+}
+
+.contato-channel-item:hover {
+  transform: translateX(6px);
+}
+
+.speech-bubble-icon {
+  position: relative;
+  width: 96px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bubble-outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: #FAF5EB;
+  transition: fill 0.25s ease;
+}
+
+.contato-channel-item:hover .bubble-outline {
+  fill: rgba(250, 245, 235, 0.12);
+}
+
+.channel-logo {
+  position: relative;
+  z-index: 2;
+  color: #FAF5EB;
+  transform: translateY(-2px);
+}
+
+.channel-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.channel-text strong {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.channel-text span {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: rgba(250, 245, 235, 0.82);
+  letter-spacing: 0.02em;
+}
+
+/* Coluna Direita com a Foto */
+.contato-right {
+  width: 100%;
+  aspect-ratio: 1 / 0.96;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.contato-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Responsividade */
+@media (max-width: 860px) {
+  .contato-full-band {
+    padding: 56px 28px 68px;
+  }
+
+  .contato-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contato-channels {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .contato-full-band {
+    padding: 44px 20px 56px;
+  }
+
+  .contato-smiley {
+    width: 50px;
+    height: 40px;
+  }
+
+  .speech-bubble-icon {
+    width: 82px;
+    height: 56px;
+  }
+}
