@@ -231,7 +231,7 @@ em, .italic {
   color: var(--bg-white);
 
   font-family: var(--font-sans);
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   font-weight: 400;
 
   cursor: pointer;
@@ -344,7 +344,7 @@ em, .italic {
 
   text-align: center;
   font-family: var(--font-serif);
-  font-size: 1.3rem;
+  font-size: 1.20rem;
   line-height: 1.1;
 }
 
