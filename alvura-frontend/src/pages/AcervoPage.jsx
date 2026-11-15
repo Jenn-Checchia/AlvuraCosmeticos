@@ -14,7 +14,7 @@ const OPCOES_FILTRO = {
   ],
 };
 
-export default function AcervoPage({ onAddToCart }) {
+export default function AcervoPage({ onAddToCart, onSelectProduto }) {
   const [busca, setBusca] = useState("");
   const [tiposSelecionados, setTiposSelecionados] = useState([]);
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
@@ -263,7 +263,12 @@ export default function AcervoPage({ onAddToCart }) {
           ) : (
             <div className="acervo-grid">
               {produtosFiltrados.map((produto) => (
-                <article key={produto.id} className="acervo-card">
+                <article
+                key={produto.id}
+                className="acervo-card"
+                style={{ cursor: "pointer" }}
+                onClick={() => onSelectProduto && onSelectProduto(produto)}
+                >
                   <div className="acervo-card-img">
                     <img src={produto.imagem} alt={produto.nome} />
                   </div>
@@ -289,14 +294,18 @@ export default function AcervoPage({ onAddToCart }) {
                       <button
                         type="button"
                         className="acervo-add-btn"
-                        onClick={() =>
-                          onAddToCart && onAddToCart(produto)
-                        }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (onAddToCart) {
+                            onAddToCart(produto);
+                          }
+                        }}
                         title="Adicionar à sacola"
                         aria-label={`Adicionar ${produto.nome}`}
                       >
                         +
                       </button>
+                      
                     </div>
                   </div>
                 </article>

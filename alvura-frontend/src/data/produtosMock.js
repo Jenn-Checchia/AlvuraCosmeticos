@@ -7,7 +7,7 @@ export const PRODUTOS_MOCK = [
     disponibilidade: "Em estoque",
     tamanho: "150g",
     preco: 44.90,
-    imagem: "/assets/products/caixa.png",
+    imagem: "/assets/products/cereja hidr.png",
     descricao:
       "Textura aveludada de rápida absorção formulada com manteiga de karité, óleo de avelã prensado a frio e extrato natural de cereja. Nutre profundamente sem deixar sensação oleosa.",
     personalizavel: false,
@@ -73,7 +73,7 @@ export const PRODUTOS_MOCK = [
     disponibilidade: "Em estoque",
     tamanho: "120g",
     preco: 9.99,
-    imagem: "/assets/products/cuidados-pes.png",
+    imagem: "/assets/products/pes2.png",
     descricao:
       "Sais minerais combinados com ervas desidratadas, flores e óleos essenciais para aliviar o cansaço imediato.",
     personalizavel: false,
@@ -86,7 +86,7 @@ export const PRODUTOS_MOCK = [
     disponibilidade: "Sob encomenda",
     tamanho: "Kit Completo",
     preco: 79.99,
-    imagem: "/assets/products/caixa.png",
+    imagem: "/assets/products/cereja.png",
     descricao:
       "Caixa rígida presenteável contendo 1 Hidratante Corporal (60g), 2 Sabonetes Botânicos e 1 Vela Aromática em vidro com tampa de madeira.",
     personalizavel: true,
@@ -105,7 +105,7 @@ export const PRODUTOS_MOCK = [
     disponibilidade: "Sob encomenda",
     tamanho: "4x 110g",
     preco: 132.99,
-    imagem: "/assets/products/kit-velas.png",
+    imagem: "/assets/products/caixa.png",
     descricao:
       "Quatro velas aromáticas acomodadas em caixa artesanal com laço de fita e cartão personalizado. Você decide se prefere aromas distintos ou iguais.",
     personalizavel: true,
@@ -118,15 +118,15 @@ export const PRODUTOS_MOCK = [
   },
   {
     id: 9,
-    nome: "Sabonete Cremoso de Mel e Aveia",
+    nome: "Sabonete Cremoso de Frutas Cítricas",
     tipo: "Sabonete",
-    ingredientes: ["Mel"],
+    ingredientes: ["Frutas Cítricas"],
     disponibilidade: "Em estoque",
     tamanho: "90g",
     preco: 18.90,
-    imagem: "/assets/products/mel.png",
+    imagem: "/assets/products/flor ama.png",
     descricao:
-      "Esfoliação ultrassuave com flocos finos de aveia e nutrição profunda do mel natural.",
+      "Esfoliação ultrassuave e nutrição profunda.",
     personalizavel: false,
   },
 ];

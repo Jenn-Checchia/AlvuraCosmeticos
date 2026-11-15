@@ -7,6 +7,7 @@ import './styles/style.css';
 import FaqPage from './pages/FaqPage';
 import ContatoPage from "./pages/ContatoPage";
 import AcervoPage from "./pages/AcervoPage";
+import ProdutoModal from "./components/ProdutoModal";
 import { useState } from 'react';
 
 const TELEFONE_ALVURA = "5567999999999";
@@ -30,6 +31,8 @@ export default function App() {
     setPaginaAtual("acervo");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const [produtoSelecionado, setProdutoSelecionado] = useState(null);
   
   return (
   <>
@@ -445,12 +448,15 @@ export default function App() {
     </div>
 
      {paginaAtual === "acervo" && (
-        <AcervoPage
-          onAddToCart={(produto) =>
-            pedirWhatsApp(`Olá! Gostaria de adicionar à sacola: ${produto.nome} (R$ ${produto.preco.toFixed(2).replace(".", ",")})`)
-          }
-        />
-      )}
+          <AcervoPage
+            onAddToCart={(produto) =>
+              pedirWhatsApp(
+                `Olá! Gostaria de adicionar à sacola: ${produto.nome} (R$ ${produto.preco.toFixed(2).replace(".", ",")})`
+              )
+            }
+            onSelectProduto={setProdutoSelecionado}
+          />
+        )}
 
       {paginaAtual === "contato" && (
       <ContatoPage onWhatsAppClick={pedirWhatsApp} />
@@ -575,6 +581,21 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      <ProdutoModal
+        produto={produtoSelecionado}
+        onClose={() => setProdutoSelecionado(null)}
+        onConfirmarPedido={(item) => {
+          const detalhesCustom = item.personalizacao
+            ? ` | Aroma: ${item.personalizacao.aroma} | Embalagem: ${item.personalizacao.embalagem}${item.personalizacao.observacao ? ` | Obs: ${item.personalizacao.observacao}` : ""}`
+            : "";
+          pedirWhatsApp(
+            `Olá! Gostaria de pedir: ${item.quantidade}x ${item.nome}${detalhesCustom}`
+          );
+        }}
+      />
+
+
     </>
   );
 }
