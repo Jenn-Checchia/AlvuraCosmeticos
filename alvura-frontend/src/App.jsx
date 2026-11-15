@@ -9,6 +9,7 @@ import ContatoPage from "./pages/ContatoPage";
 import AcervoPage from "./pages/AcervoPage";
 import ProdutoModal from "./components/ProdutoModal";
 import EncomendasPage from "./pages/EncomendasPage";
+import AuthModal from "./components/AuthModal";
 import { useState } from 'react';
 
 const TELEFONE_ALVURA = "5567999999999";
@@ -26,6 +27,8 @@ export default function App() {
   }
   
   const [paginaAtual, setPaginaAtual] = useState('home');
+  const [authModalAberto, setAuthModalAberto] = useState(false);
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
 
   const abrirAcervo = (e) => {
     e.preventDefault();
@@ -40,10 +43,16 @@ export default function App() {
     <div className="page-wrapper">
 
         <Header
-        onCartClick={() => pedirWhatsApp("Olá! Gostaria de fazer um pedido.")}
-        onNavigate={setPaginaAtual}
-        paginaAtual={paginaAtual}
-      />
+          onCartClick={() => pedirWhatsApp("Olá! Gostaria de fazer um pedido.")}
+          onNavigate={setPaginaAtual}
+          paginaAtual={paginaAtual}
+          usuarioLogado={usuarioLogado}
+          onAuthClick={() => setAuthModalAberto(true)}
+          onLogout={() => {
+            setUsuarioLogado(null);
+            if (paginaAtual === "admin") setPaginaAtual("home");
+          }}
+        />
 
     
       {paginaAtual === "faq" && <FaqPage />}
@@ -612,6 +621,12 @@ export default function App() {
           );
         }}
       />
+
+      <AuthModal
+      isOpen={authModalAberto}
+      onClose={() => setAuthModalAberto(false)}
+      onLoginSuccess={(usuario) => setUsuarioLogado(usuario)}
+     />
 
 
     </>
