@@ -61,7 +61,7 @@ export default function Header({ onCartClick, onNavigate, paginaAtual }) {
           className="topbar-icon"
           type="button"
           aria-label="Pesquisar"
-          onClick={(e) => irParaPagina(e, "home", "catalogo")}
+          onClick={(e) => irParaPagina(e, "acervo")}
         >
           <svg
             viewBox="0 0 24 24"

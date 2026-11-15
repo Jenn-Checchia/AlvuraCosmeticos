@@ -1,0 +1,341 @@
+.acervo-page {
+  padding: 28px 36px 104px; /* Margem interna confortável entre as bordas da página e o conteúdo */
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Barra horizontal marrom mais fina e elegante no topo */
+.acervo-top-divider {
+  width: 100%;
+  height: 3px;
+  background-color: rgba(124, 59, 0, 0.75);
+  border-radius: 999px;
+  margin-bottom: 44px;
+}
+
+.acervo-layout {
+  display: grid;
+  grid-template-columns: 235px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+/* SIDEBAR DE FILTROS */
+.acervo-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.filtro-card {
+  border: 1px solid rgba(124, 59, 0, 0.38); /* Traço mais fino e refinado */
+  border-radius: 22px;
+  padding: 20px 22px;
+  background-color: rgba(255, 255, 255, 0.25);
+  transition: border-color 0.2s ease;
+}
+
+.filtro-card:hover {
+  border-color: rgba(124, 59, 0, 0.7);
+}
+
+.filtro-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 700;       /* Negrito */
+  font-style: italic;     /* Itálico */
+  color: #7C3B00;
+  text-align: left;
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+}
+
+.filtro-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+
+.filtro-checkbox:hover {
+  color: #7C3B00;
+}
+
+.filtro-checkbox:last-child {
+  margin-bottom: 0;
+}
+
+.filtro-checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 1px solid rgba(124, 59, 0, 0.65);
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.filtro-checkbox input[type="checkbox"]:checked {
+  background-color: #7C3B00;
+  border-color: #7C3B00;
+}
+
+.filtro-checkbox input[type="checkbox"]::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background-color: #FAF5EB;
+  transform: scale(0);
+  transition: transform 0.15s ease;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.filtro-checkbox input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.btn-limpar-filtros {
+  width: 100%;
+  padding: 11px 18px;
+  border: 1px solid #7C3B00;
+  border-radius: 999px;
+  background-color: transparent;
+  color: #7C3B00;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-limpar-filtros:hover {
+  background-color: #7C3B00;
+  color: #FAF5EB;
+}
+
+/* ÁREA DIREITA: BARRA DE PESQUISA + GRADE */
+.acervo-search-bar {
+  position: relative;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.acervo-search-bar input {
+  width: 100%;
+  padding: 14px 48px 14px 26px;
+  border: 1px solid rgba(124, 59, 0, 0.45);
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.acervo-search-bar input::placeholder {
+  color: rgba(124, 59, 0, 0.65);
+}
+
+.acervo-search-bar input:focus {
+  border-color: #7C3B00;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(124, 59, 0, 0.06);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #7C3B00;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.acervo-results-meta {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  padding-left: 6px;
+}
+
+/* GRADE 4 COLUNAS DE PRODUTOS */
+.acervo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.acervo-card {
+  border: 1px solid rgba(124, 59, 0, 0.26);
+  border-radius: 18px; /* Cantos suavizados no estilo da vitrine da Home */
+  padding: 12px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.acervo-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(124, 59, 0, 0.65);
+  box-shadow: 0 12px 28px rgba(35, 28, 24, 0.07);
+}
+
+.acervo-card-img {
+  width: 100%;
+  aspect-ratio: 1 / 1.02;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--bg-warm-card);
+  margin-bottom: 14px;
+}
+
+.acervo-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.acervo-card:hover .acervo-card-img img {
+  transform: scale(1.04);
+}
+
+.acervo-card-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 0 4px;
+}
+
+.acervo-card-body h3 {
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  font-weight: 500;
+  line-height: 1.22;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.acervo-card-size {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.acervo-card-price {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #7C3B00;
+  margin-bottom: 16px;
+}
+
+.acervo-card-footer {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(124, 59, 0, 0.12);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.acervo-status {
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  color: var(--text-dark);
+}
+
+.acervo-status.on-order {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.acervo-add-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(124, 59, 0, 0.55);
+  background-color: transparent;
+  color: #7C3B00;
+  font-size: 1.05rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.acervo-add-btn:hover {
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  transform: scale(1.06);
+}
+
+.acervo-empty {
+  text-align: center;
+  padding: 64px 24px;
+  border: 1px dashed rgba(124, 59, 0, 0.35);
+  border-radius: 22px;
+  color: #7C3B00;
+}
+
+.acervo-empty p {
+  margin-bottom: 18px;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 1200px) {
+  .acervo-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 960px) {
+  .acervo-page {
+    padding: 24px 20px 80px;
+  }
+
+  .acervo-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .acervo-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .acervo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .acervo-page {
+    padding: 20px 12px 64px;
+  }
+
+  .acervo-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .acervo-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -6,6 +6,7 @@ import { produtos } from './mockdados/produtos';
 import './styles/style.css';
 import FaqPage from './pages/FaqPage';
 import ContatoPage from "./pages/ContatoPage";
+import AcervoPage from "./pages/AcervoPage";
 import { useState } from 'react';
 
 const TELEFONE_ALVURA = "5567999999999";
@@ -23,6 +24,12 @@ export default function App() {
   }
   
   const [paginaAtual, setPaginaAtual] = useState('home');
+
+  const abrirAcervo = (e) => {
+    e.preventDefault();
+    setPaginaAtual("acervo");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   
   return (
   <>
@@ -186,9 +193,9 @@ export default function App() {
               “Cada ingrediente entra pela eficácia e permanece pelos resultados.”
             </p>
 
-            <a href="#catalogo" className="btn-veja-mais">
-              Veja Mais <span>↗</span>
-            </a>
+            <a href="#acervo" className="btn-veja-mais" onClick={abrirAcervo}>
+            Veja Mais <span>↗</span>
+            </a>  
           </div>
 
         </section>
@@ -274,8 +281,8 @@ export default function App() {
               <p>Texturas que a pele reconhece, aromas que ficam na memória.</p>
             </div>
 
-            <a href="#todos-produtos" className="btn-outline-pill">
-              VER TODOS OS PRODUTOS <span>→</span>
+            <a href="#acervo" className="btn-outline-pill" onClick={abrirAcervo}>
+            VER TODOS OS PRODUTOS <span>→</span>
             </a>
           </div>
 
@@ -437,7 +444,14 @@ export default function App() {
       )}    {/*Fim da home*/}
     </div>
 
-     
+     {paginaAtual === "acervo" && (
+        <AcervoPage
+          onAddToCart={(produto) =>
+            pedirWhatsApp(`Olá! Gostaria de adicionar à sacola: ${produto.nome} (R$ ${produto.preco.toFixed(2).replace(".", ",")})`)
+          }
+        />
+      )}
+
       {paginaAtual === "contato" && (
       <ContatoPage onWhatsAppClick={pedirWhatsApp} />
       )}
