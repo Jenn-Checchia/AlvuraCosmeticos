@@ -1,21 +1,57 @@
-export default function Header({ onCartClick }) {
+export default function Header({ onCartClick, onNavigate, paginaAtual }) {
+  const irParaPagina = (e, destino, sectionId = null) => {
+    e.preventDefault();
+
+    if (onNavigate) {
+      onNavigate(destino);
+    }
+
+    // Se houver uma âncora na Home (ex: catálogo), rola suavemente até ela
+    if (destino === "home" && sectionId) {
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({
+          behavior: "smooth",
+        });
+      }, 60);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <header className="topbar">
       <nav className="topbar-left" aria-label="Navegação principal">
-        <a href="#faq" className="topbar-link">
+        <a
+          href="#faq"
+          className={`topbar-link ${paginaAtual === "faq" ? "is-active" : ""}`}
+          onClick={(e) => irParaPagina(e, "faq")}
+        >
           FAQ
         </a>
 
-        <a href="#origem" className="topbar-link">
+        <a
+          href="#origem"
+          className="topbar-link"
+          onClick={(e) => irParaPagina(e, "home", "origem")}
+        >
           Quem somos
         </a>
 
-        <a href="#contato" className="topbar-link">
+        <a
+          href="#contato"
+          className="topbar-link"
+          onClick={(e) => irParaPagina(e, "home", "contato")}
+        >
           Contato
         </a>
       </nav>
 
-      <a href="#" className="topbar-logo" aria-label="Alvura - Página inicial">
+      <a
+        href="#inicio"
+        className="topbar-logo"
+        aria-label="Alvura - Página inicial"
+        onClick={(e) => irParaPagina(e, "home")}
+      >
         <span>ALVURA</span>
         <small>NATURAL COSMÉTICOS</small>
       </a>
@@ -25,14 +61,12 @@ export default function Header({ onCartClick }) {
           className="topbar-icon"
           type="button"
           aria-label="Pesquisar"
-          onClick={() => document.getElementById("catalogo")?.scrollIntoView({
-            behavior: "smooth",
-          })}
+          onClick={(e) => irParaPagina(e, "home", "catalogo")}
         >
           <svg
             viewBox="0 0 24 24"
-            width="16"
-            height="16"
+            width="30"
+            height="30"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
@@ -43,7 +77,11 @@ export default function Header({ onCartClick }) {
           </svg>
         </button>
 
-        <a href="#contato" className="topbar-link topbar-account">
+        <a
+          href="#conta"
+          className="topbar-link topbar-account"
+          onClick={(e) => irParaPagina(e, "home", "contato")}
+        >
           Minha conta
         </a>
 
