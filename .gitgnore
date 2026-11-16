@@ -1,2 +1,33 @@
-node_modules
-package-lock
+# =========================================
+# 1. SENHAS E SEGURANÇA (O mais importante)
+# =========================================
+application-secret.properties
+.env
+.env.*
+*.pem
+*.key
+
+# =========================================
+# 2. FRONTEND (React / Node.js)
+# =========================================
+alvura-frontend/node_modules/
+alvura-frontend/dist/
+alvura-frontend/build/
+npm-debug.log*
+
+# =========================================
+# 3. BACKEND (Java / Spring Boot / Maven)
+# =========================================
+alvura-backend/target/
+*.class
+*.jar
+*.war
+*.log
+
+# =========================================
+# 4. PASTAS DE SISTEMA E EDITORES
+# =========================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
