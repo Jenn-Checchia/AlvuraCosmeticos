@@ -1,7 +1,23 @@
 import React from 'react';
 import '../styles/contato.css';
 
-export default function ContatoPage({ onWhatsAppClick }) {
+export default function ContatoPage({ onWhatsAppClick, configSite }) {
+  const whatsappNumero = configSite?.whatsapp || "5567999999999";
+  const instagramHandle = configSite?.instagram || "@alvura.cosmeticos";
+  const emailContato = configSite?.email || "oi@alvura.com.br";
+  const subtituloContato = configSite?.textoContato || "Fale com humanos!";
+
+  const formatarTelefone = (num) => {
+    const limpo = String(num).replace(/\D/g, "");
+    if (limpo.length === 13 && limpo.startsWith("55")) {
+      return `+55 ${limpo.slice(2, 4)} ${limpo.slice(4, 9)}-${limpo.slice(9)}`;
+    }
+    if (limpo.length === 11) {
+      return `(${limpo.slice(0, 2)}) ${limpo.slice(2, 7)}-${limpo.slice(7)}`;
+    }
+    return num;
+  };
+
   return (
     <main className="contato-full-band">
       <div className="contato-inner">
@@ -9,7 +25,6 @@ export default function ContatoPage({ onWhatsAppClick }) {
         <div className="contato-left">
           <div className="contato-title-row">
             <h1>Fale conosco</h1>
-            {/* Rostinho sorridente desenhado à mão igual ao rascunho */}
             <svg
               className="contato-smiley"
               width="68"
@@ -28,12 +43,12 @@ export default function ContatoPage({ onWhatsAppClick }) {
             </svg>
           </div>
 
-          <p className="contato-subtitle">  Fale com humanos!</p>
+          <p className="contato-subtitle">{subtituloContato}</p>
 
           <div className="contato-channels">
             {/* Canal 1: WhatsApp */}
             <a
-              href="https://wa.me/5567999999999"
+              href={`https://wa.me/${whatsappNumero}`}
               target="_blank"
               rel="noreferrer"
               className="contato-channel-item"
@@ -71,13 +86,13 @@ export default function ContatoPage({ onWhatsAppClick }) {
               </div>
               <div className="channel-text">
                 <strong>WhatsApp</strong>
-                <span>+55 67 99999-9999</span>
+                <span>{formatarTelefone(whatsappNumero)}</span>
               </div>
             </a>
 
             {/* Canal 2: Instagram */}
             <a
-              href="https://instagram.com/alvura.cosmeticos"
+              href={`https://instagram.com/${instagramHandle.replace(/^@/, "")}`}
               target="_blank"
               rel="noreferrer"
               className="contato-channel-item"
@@ -110,13 +125,13 @@ export default function ContatoPage({ onWhatsAppClick }) {
               </div>
               <div className="channel-text">
                 <strong>Instagram</strong>
-                <span>@alvura.cosmeticos</span>
+                <span>{instagramHandle}</span>
               </div>
             </a>
 
             {/* Canal 3: E-mail */}
             <a
-              href="mailto:oi@alvura.com.br"
+              href={`mailto:${emailContato}`}
               className="contato-channel-item"
             >
               <div className="speech-bubble-icon">
@@ -146,7 +161,7 @@ export default function ContatoPage({ onWhatsAppClick }) {
               </div>
               <div className="channel-text">
                 <strong>E-mail</strong>
-                <span>oi@alvura.com.br</span>
+                <span>{emailContato}</span>
               </div>
             </a>
           </div>

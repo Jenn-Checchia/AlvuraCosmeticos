@@ -7,7 +7,7 @@ export default function Header({
   onLogout,
 }) {
 
-  
+
   const irParaPagina = (e, destino, sectionId = null) => {
     e.preventDefault();
 
@@ -89,7 +89,7 @@ export default function Header({
         {!usuarioLogado ? (
           <a
             href="#login"
-            className="topbar-link topbar-account"
+            className="topbar-link"
             onClick={(e) => {
               e.preventDefault();
               onAuthClick && onAuthClick();
@@ -100,44 +100,38 @@ export default function Header({
         ) : (
           <div
             className="topbar-user-area"
-            style={{ display: "flex", alignItems: "center", gap: "10px" }}
+            style={{ display: "flex", alignItems: "center", gap: "12px" }}
           >
-            <button
-              type="button"
-              className="topbar-link"
-              style={{
-                border: "none",
-                background: "transparent",
-                cursor: "pointer",
-                fontWeight: 500,
-              }}
-              onClick={() => {
-                if (usuarioLogado.role === "admin") {
+            {usuarioLogado.role === "admin" ? (
+              <button
+                type="button"
+                onClick={() => {
                   onNavigate && onNavigate("admin");
-                }
-              }}
-              title={
-                usuarioLogado.role === "admin"
-                  ? "Abrir painel de gestão"
-                  : usuarioLogado.email
-              }
-            >
-              Olá, {usuarioLogado.nome.split(" ")[0]}
-              {usuarioLogado.role === "admin" && (
-                <span
-                  style={{
-                    marginLeft: "6px",
-                    fontSize: "0.62rem",
-                    padding: "2px 7px",
-                    borderRadius: "999px",
-                    backgroundColor: "#7C3B00",
-                    color: "#FAF5EB",
-                  }}
-                >
-                  Admin
-                </span>
-              )}
-            </button>
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                style={{
+                  padding: "8px 18px",
+                  borderRadius: "999px",
+                  border: "1px solid #C99E38",
+                  backgroundColor: "#7C3B00",
+                  color: "#FAF5EB",
+                  fontSize: "0.78rem",
+                  fontWeight: 500,
+                  letterSpacing: "0.03em",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  boxShadow: "0 4px 12px rgba(124, 59, 0, 0.18)",
+                }}
+                title="Voltar ao Portal do Administrador"
+              >
+                ✦ Área do Administrador
+              </button>
+            ) : (
+              <span className="topbar-link" style={{ fontWeight: 500 }}>
+                Olá, {usuarioLogado.nome.split(" ")[0]}
+              </span>
+            )}
+
             <button
               type="button"
               onClick={onLogout}
@@ -145,7 +139,7 @@ export default function Header({
                 border: "none",
                 background: "transparent",
                 color: "var(--text-muted)",
-                fontSize: "0.7rem",
+                fontSize: "0.75rem",
                 textDecoration: "underline",
                 cursor: "pointer",
               }}
@@ -154,6 +148,7 @@ export default function Header({
             </button>
           </div>
         )}
+
 
         <button
           className="topbar-cart"

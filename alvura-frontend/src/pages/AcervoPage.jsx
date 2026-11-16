@@ -14,7 +14,13 @@ const OPCOES_FILTRO = {
   ],
 };
 
-export default function AcervoPage({ onAddToCart, onSelectProduto, onAbrirEncomendas }) {
+export default function AcervoPage({
+  produtos = PRODUTOS_MOCK,
+  onAddToCart,
+  onSelectProduto,
+  onAbrirEncomendas,
+}) {
+
   const [busca, setBusca] = useState("");
   const [tiposSelecionados, setTiposSelecionados] = useState([]);
   const [ingredientesSelecionados, setIngredientesSelecionados] = useState([]);
@@ -40,7 +46,7 @@ export default function AcervoPage({ onAddToCart, onSelectProduto, onAbrirEncome
   };
 
   const produtosFiltrados = useMemo(() => {
-    return PRODUTOS_MOCK.filter((prod) => {
+    return produtos.filter((prod) => {
       // 1. Pesquisa por texto
       if (
         busca.trim() !== "" &&
@@ -90,6 +96,7 @@ export default function AcervoPage({ onAddToCart, onSelectProduto, onAbrirEncome
       return true;
     });
   }, [
+    produtos,
     busca,
     tiposSelecionados,
     ingredientesSelecionados,

@@ -10,6 +10,8 @@ import AcervoPage from "./pages/AcervoPage";
 import ProdutoModal from "./components/ProdutoModal";
 import EncomendasPage from "./pages/EncomendasPage";
 import AuthModal from "./components/AuthModal";
+import AdminPage from "./pages/AdminPage";
+import { PRODUTOS_MOCK } from "./data/produtosMock";
 import { useState } from 'react';
 
 const TELEFONE_ALVURA = "5567999999999";
@@ -19,7 +21,7 @@ export default function App() {
   function pedirWhatsApp(itemOuTexto) {
     const nome = typeof itemOuTexto === 'string' ? itemOuTexto : `${itemOuTexto.nome} (R$ ${itemOuTexto.preco.toFixed(2).replace('.', ',')})`;
     const texto = `Olá, Alvura! Vi no catálogo e gostaria de pedir: ${nome}`;
-    window.open(`https://wa.me/${TELEFONE_ALVURA}?text=${encodeURIComponent(texto)}`, '_blank');
+    window.open(`https://wa.me/${configSite.whatsapp}?text=${encodeURIComponent(texto)}`, '_blank');
   }
   
   function rolarParaCatalogo() {
@@ -29,6 +31,52 @@ export default function App() {
   const [paginaAtual, setPaginaAtual] = useState('home');
   const [authModalAberto, setAuthModalAberto] = useState(false);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const [catalogoProdutos, setCatalogoProdutos] = useState(PRODUTOS_MOCK);
+
+  const [categorias, setCategorias] = useState([
+    "Hidratante",
+    "Vela",
+    "Sabonete",
+    "Escalda-pés",
+    "Kits",
+  ]);
+
+  const [encomendasAdmin, setEncomendasAdmin] = useState([
+    {
+      id: 1,
+      cliente: "Camila & Rafael (Casamento)",
+      ocasiao: "Casamento / Noivado",
+      produto: "Mini Velas Aromáticas",
+      quantidade: "50 a 99 unidades",
+      aromas: "Cereja e Avelã, Mel e Camomila",
+      dataEvento: "2026-12-14",
+      observacoes: "Tag com iniciais C & R em dourado e fita off-white.",
+      status: "Em produção",
+    },
+    {
+      id: 2,
+      cliente: "Estúdio Botânica Arquitetura",
+      ocasiao: "Brinde Corporativo",
+      produto: "Kits Presenteáveis Completos",
+      quantidade: "30 a 49 unidades",
+      aromas: "Patchouli Floral",
+      dataEvento: "2026-12-20",
+      observacoes: "Presentes de final de ano para clientes.",
+      status: "Novo",
+    },
+  ]);
+
+  const [configSite, setConfigSite] = useState({
+    whatsapp: "5567999999999",
+    instagram: "@alvura.cosmeticos",
+    email: "oi@alvura.com.br",
+    endereco: "Campo Grande, MS — Produção Artesanal",
+    heroSubtitulo: "Cosméticos botânicos feitos à mão com ingredientes brasileiros.",
+    textoContato: "Fale com humanos!",
+    imagemAtelier: "/assets/products/vela floral.png",
+  });
+
+  const [adminResetTrigger, setAdminResetTrigger] = useState(0);
 
   const abrirAcervo = (e) => {
     e.preventDefault();
@@ -44,7 +92,12 @@ export default function App() {
 
         <Header
           onCartClick={() => pedirWhatsApp("Olá! Gostaria de fazer um pedido.")}
-          onNavigate={setPaginaAtual}
+          onNavigate={(destino) => {
+            setPaginaAtual(destino);
+            if (destino === "admin") {
+              setAdminResetTrigger((n) => n + 1);
+            }
+          }}
           paginaAtual={paginaAtual}
           usuarioLogado={usuarioLogado}
           onAuthClick={() => setAuthModalAberto(true)}
@@ -75,7 +128,7 @@ export default function App() {
               Alvura nasceu do desejo de criar beleza com mais presença e menos ruído. Produtos nacionais. à base de ativos vegetais eficazes, respeitando o ritmo das colheitas e o tempo de cada fórmula.
             </p>
             <p>
-              Uma marca comprometida com a criaçäo de cosméticos naturais, formulados com ingrtedientes orgânicos, biodegradáveis e livres de substâncias agressivas.
+              Uma marca comprometida com a criaçäo de cosméticos naturais, formulados com ingredientes orgânicos, biodegradáveis e livres de substâncias agressivas.
             </p>
           </div>
 
@@ -486,9 +539,44 @@ export default function App() {
         )}
 
       {paginaAtual === "contato" && (
-      <ContatoPage onWhatsAppClick={pedirWhatsApp} />
+        <ContatoPage
+          configSite={configSite}
+          onWhatsAppClick={(msg) => pedirWhatsApp(msg)}
+        />
       )}
 
+     
+      {paginaAtual === "admin" && usuarioLogado?.role === "admin" && (
+          <AdminPage
+            produtos={catalogoProdutos}
+            categorias={categorias}
+            onAdicionarCategoria={(novaCat) =>
+              setCategorias((prev) =>
+                prev.includes(novaCat) ? prev : [...prev, novaCat]
+              )
+            }
+            onAdicionarProduto={(novo) =>
+              setCatalogoProdutos((prev) => [novo, ...prev])
+            }
+            onAtualizarProduto={(atualizado) =>
+              setCatalogoProdutos((prev) =>
+                prev.map((p) => (p.id === atualizado.id ? atualizado : p))
+              )
+            }
+            onExcluirProduto={(id) =>
+              setCatalogoProdutos((prev) => prev.filter((p) => p.id !== id))
+            }
+            encomendas={encomendasAdmin}
+            onAtualizarStatusEncomenda={(id, novoStatus) =>
+              setEncomendasAdmin((prev) =>
+                prev.map((e) => (e.id === id ? { ...e, status: novoStatus } : e))
+              )
+            }
+            configSite={configSite}
+            onSalvarConfigSite={(novosDados) => setConfigSite(novosDados)}
+            resetTrigger={adminResetTrigger}
+          />
+        )}
 
       {/* Seção Newsletter: Cartas da Alvura */}
       <section className="newsletter-gold-strip">
@@ -623,10 +711,15 @@ export default function App() {
       />
 
       <AuthModal
-      isOpen={authModalAberto}
-      onClose={() => setAuthModalAberto(false)}
-      onLoginSuccess={(usuario) => setUsuarioLogado(usuario)}
-     />
+        isOpen={authModalAberto}
+        onClose={() => setAuthModalAberto(false)}
+        onLoginSuccess={(usuario) => {
+          setUsuarioLogado(usuario);
+          if (usuario.role === "admin") {
+            setPaginaAtual("admin");
+          }
+        }}
+      />
 
 
     </>
