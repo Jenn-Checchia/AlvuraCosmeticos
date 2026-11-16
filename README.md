@@ -67,8 +67,8 @@ Certifique-se de ter instalado em sua máquina:
 ### Passo a passo
 
 1. **Clone o repositório:**
-   ```bash
-   git clone [https://github.com/seu-usuario/alvura-cosmeticos.git](https://github.com/seu-usuario/alvura-cosmeticos.git)
+```bash
+git clone [https://github.com/seu-usuario/alvura-cosmeticos.git](https://github.com/seu-usuario/alvura-cosmeticos.git)
 
 ```
 ```
@@ -150,6 +150,3 @@ alvura-cosmeticos/
 
 ```
 
-```
-
-```
