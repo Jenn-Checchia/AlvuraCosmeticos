@@ -1,29 +1,28 @@
 # 🌿 Alvura — Natural Cosméticos
 
-E-commerce artesanal desenvolvido em **React + Vite** para a marca **Alvura Natural Cosméticos**, focado em uma estética botânica acolhedora, tipografia editorial (serifada e sans-serif) e experiência de compra fluida com suporte a encomendas personalizadas e painel de gestão integrado.
+E-commerce artesanal full-stack desenvolvido em **React + Vite** (Frontend) e **Java Spring Boot** (Backend) com banco de dados **PostgreSQL**. O projeto é focado em uma estética botânica acolhedora, tipografia editorial (serifada e sans-serif) e uma experiência de compra fluida com suporte a encomendas personalizadas e painel de gestão integralmente persistido em banco de dados.
 
 ---
 
 ## ✨ Funcionalidades Implementadas
 
-### 1. Arquitetura SPA (Single Page Application)
-- Navegação instantânea entre telas sem recarregamento de página, gerenciada centralmente pelo estado de rotas no `App.jsx`.
-- **Header fixo (`position: sticky`)** cobrindo 100% da largura da tela com acesso rápido às páginas, busca, autenticação e sacola.
-- Escala tipográfica acessível configurada na raiz (`html { font-size: 18px; }`) com unidades relativas (`rem`) e responsividade adaptativa para desktop, tablet e mobile.
+### 1. Arquitetura SPA & API REST (Full-Stack)
+- **Frontend (React):** Navegação instantânea entre telas sem recarregamento de página, gerenciada pelo estado de rotas no `App.jsx`. Header fixo (`position: sticky`) com acesso rápido e responsividade adaptativa (desktop, tablet e mobile).
+- **Backend (Spring Boot):** API RESTful robusta estruturada no padrão MVC (Model-View-Controller) fornecendo endpoints de CRUD completos e seguros para o frontend.
+- **Banco de Dados:** Persistência relacional de Produtos e Usuários utilizando PostgreSQL e mapeamento objeto-relacional (ORM) via Hibernate/JPA.
 
 ### 2. Vitrine Principal (Home)
 - Banner principal, manifestos da marca (*Brasil*, *Matérias-primas*, *Luxo artesanal*), **Biblioteca Botânica**, **Uma Seleção para Começar**, seção de feedbacks, newsletter e rodapé institucional.
 - Botões de ação conectados diretamente ao catálogo (*Acervo*) e ao atendimento via WhatsApp.
 
 ### 3. Acervo (Catálogo Interativo com Filtros)
-- Grade responsiva de até **4 colunas** alimentada por estado dinâmico sincronizado com o painel administrativo (`produtosMock.js`).
+- Grade responsiva de até **4 colunas** alimentada dinamicamente pelo banco de dados PostgreSQL.
 - **Busca em tempo real** por nome ou categoria do produto.
 - **Filtros combináveis** por:
-  - Tipo de produto (*Hidratante, Vela, Sabonete, Escalda-pés, Kits* e categorias criadas pelo administrador)
-  - Ingredientes (*Cereja, Avelã, Mel, Frutas cítricas*)
-  - Disponibilidade (*Em estoque* ou *Sob encomenda*)
-  - Tamanho / Peso
-  - Faixa de preço
+  - Tipo de produto (*Hidratante, Vela, Sabonete, Escalda-pés, Kits*).
+  - Ingredientes (*Cereja, Avelã, Mel, Frutas cítricas*).
+  - Disponibilidade (*Em estoque* ou *Sob encomenda*).
+  - Tamanho / Peso e Faixa de preço.
 
 ### 4. Modal de Detalhes & Personalização de Encomendas
 - Ao clicar em qualquer card do acervo, abre um modal sobreposto com foto ampliada, descrição sensorial, notas botânicas e seletor de quantidade.
@@ -33,27 +32,29 @@ E-commerce artesanal desenvolvido em **React + Vite** para a marca **Alvura Natu
 - Página dedicada a pedidos personalizados, eventos e brindes corporativos com formulário interativo e envio direto de orçamento.
 
 ### 6. Autenticação & Perfis de Acesso (Cliente / Administrador)
-- Modal único (`AuthModal`) que alterna suavemente entre **Login** e **Criação de Conta**, com suporte a fechamento via tecla `ESC` ou clique externo.
-- Controle de acesso baseado em perfil (`cliente` vs. `admin`), exibindo o botão **Área do Administrador** no cabeçalho para usuários com permissão de gestão.
+- Modal único (`AuthModal`) que alterna suavemente entre **Login** e **Criação de Conta**, comunicando-se com a API para verificação e persistência de dados.
+- Controle de acesso baseado em perfil (`cliente` vs. `admin`), exibindo painéis e botões de gerenciamento apenas para usuários com permissão mestre.
 
 ### 7. Portal do Administrador
 - **Tela Inicial (Portal):** Interface editorial em tom vinho escuro com acesso rápido aos módulos administrativos.
-- **Acervo & Estoque:** Cadastro, edição, exclusão, upload/troca de fotografias, criação de novas categorias e alternância rápida de disponibilidade (`Em estoque` / `Sob encomenda`) refletindo em tempo real na vitrine.
-- **Encomendas:** Acompanhamento de solicitações personalizadas com filtro por status (*Todos*, *Novo*, *Em produção*, *Concluído*).
-- **Editar Dados do Site:** Gerenciamento centralizado de WhatsApp, Instagram, e-mail, endereço, textos institucionais e imagens principais.
-
-### 8. FAQ & Fale Conosco
-- **FAQ:** Layout editorial com ilustrações botânicas decorativas (`mix-blend-mode: multiply`) e balões interativos expansíveis no hover e toque.
-- **Fale Conosco:** Faixa de largura total na paleta marrom âmbar (`#7C3B00`) com balões de fala clicáveis sincronizados com os contatos configurados no painel administrativo.
+- **Acervo & Estoque (CRUD):** Cadastro, edição, exclusão e alternância rápida de disponibilidade. As ações atualizam o banco de dados via requisições POST/PUT/DELETE e refletem em tempo real na vitrine.
+- **Encomendas e Dados do Site:** Acompanhamento de solicitações e gerenciamento centralizado de contatos e textos institucionais.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **[React](https://react.dev/)** — Biblioteca principal para construção da interface baseada em componentes e hooks (`useState`, `useEffect`, `useMemo`).
-- **[Vite](https://vitejs.dev/)** — Bundler e servidor de desenvolvimento ultrarrápido com Hot Module Replacement (HMR).
-- **CSS3 Puro (Modular)** — Estilização organizada por página/componente utilizando variáveis CSS (`:root`), CSS Grid, Flexbox, animações suaves e media queries.
-- **SVG Inline** — Ícones, favicon personalizado e ilustrações vetoriais leves e escaláveis.
+### Frontend
+- **[React](https://react.dev/)** — Construção da interface (Componentes, `useState`, `useEffect`, `useMemo`, `fetch` API).
+- **[Vite](https://vitejs.dev/)** — Bundler e servidor de desenvolvimento ultrarrápido (HMR).
+- **CSS3 Puro (Modular)** — Variáveis CSS (`:root`), Grid, Flexbox e Media Queries.
+
+### Backend & Banco de Dados
+- **[Java 17+](https://adoptium.net/)** — Linguagem principal do servidor.
+- **[Spring Boot 3](https://spring.io/projects/spring-boot)** — Framework base da aplicação (Web, Data JPA).
+- **[Hibernate](https://hibernate.org/)** — Mapeamento Objeto-Relacional (ORM) para o banco.
+- **[PostgreSQL](https://www.postgresql.org/)** — Sistema de Gerenciamento de Banco de Dados Relacional.
+- **Maven** — Gerenciamento de dependências e build do backend.
 
 ---
 
@@ -61,92 +62,78 @@ E-commerce artesanal desenvolvido em **React + Vite** para a marca **Alvura Natu
 
 ### Pré-requisitos
 Certifique-se de ter instalado em sua máquina:
-- **[Node.js](https://nodejs.org/)** (versão 18 ou superior recomendada)
-- **npm** (incluso no Node.js) ou **yarn**
+- **Node.js** (v18+) e **npm/yarn**
+- **Java JDK** (v17 ou superior)
+- **PostgreSQL** e **pgAdmin**
 
-### Passo a passo
+### Passo 1: Configuração do Banco de Dados
+1. Abra o pgAdmin e crie um novo banco de dados vazio chamado `alvura_db`.
 
-1. **Clone o repositório:**
+### Passo 2: Clonar e Configurar o Repositório
 ```bash
-git clone [https://github.com/seu-usuario/alvura-cosmeticos.git](https://github.com/seu-usuario/alvura-cosmeticos.git)
-
-
-```
-2. **Acesse a pasta do projeto:**
-```bash
+git clone https://github.com/seu-usuario/alvura-cosmeticos.git
 cd alvura-cosmeticos
-
 ```
 
+### Passo 3: Executar o Backend (Java Spring Boot)
+1. Navegue até a pasta do backend:
+   ```bash
+   cd alvura-backend
+   ```
+2. Verifique o arquivo `src/main/resources/application-secret.properties` e garanta que as credenciais correspondem ao seu PostgreSQL local (usuário e senha).
+3. Inicie a aplicação (as tabelas e o usuário administrador serão criados automaticamente):
+   ```bash
+   ./mvnw spring-boot:run
+   # No Windows: .\mvnw.cmd spring-boot:run
+   ```
+   *O backend rodará na porta `8080`.*
 
-3. **Instale as dependências:**
-```bash
-npm install
-
-```
-
-
-4. **Inicie o servidor de desenvolvimento:**
-```bash
-npm run dev
-
-```
-
-
-5. **Acesse no navegador:**
-Abra o endereço exibido no terminal (geralmente `http://localhost:5173`).
-
-### Credenciais de Teste (Ambiente Simulado)
-
-Para testar os diferentes níveis de acesso no modal **Minha conta**:
-
-* **Administrador:** `admin@alvura.com.br` | Senha: `1234`
-* **Cliente:** `cliente@alvura.com.br` | Senha: `1234`
-
-
+### Passo 4: Executar o Frontend (React)
+1. Abra uma nova aba no terminal e navegue até a pasta do frontend:
+   ```bash
+   cd alvura-frontend
+   ```
+2. Instale as dependências e inicie o servidor:
+   ```bash
+   npm install
+   npm run dev
+   ```
+3. Acesse no navegador: `http://localhost:5173`.
 
 ---
 
-## 📁 Estrutura de Pastas
+## 🔑 Credenciais de Teste
+
+Ao rodar o backend pela primeira vez, o *Seeder* do banco de dados cria automaticamente a conta principal para você testar a aplicação:
+
+- **Administrador:** `admin@alvura.com.br` | Senha: `1234`
+*(Você pode criar contas de clientes comuns utilizando o próprio botão "Registre-se" no site).*
+
+---
+
+## 📁 Estrutura do Monorepo
 
 ```text
 alvura-cosmeticos/
-├── public/
-│   ├── favicon.svg              # Ícone editorial da aba do navegador
-│   ├── images/                  # Fotografias institucionais e kits
-│   └── assets/
-│       └── products/            # Imagens dos produtos e ilustrações botânicas
-├── src/
-│   ├── components/
-│   │   ├── AuthModal.jsx        # Modal de login e registro de usuários
-│   │   ├── CategoryFilter.jsx   # Filtro de categorias da vitrine
-│   │   ├── Header.jsx           # Cabeçalho fixo com navegação e acesso admin
-│   │   ├── HeroBanner.jsx       # Banner principal da página inicial
-│   │   ├── ProductCard.jsx      # Card individual de produto
-│   │   └── ProdutoModal.jsx     # Modal de detalhes do produto e personalização
-│   ├── data/
-│   │   ├── produtosMock.js      # Base inicial de dados do catálogo
-│   │   └── usuariosMock.js      # Base simulada de usuários e perfis
-│   ├── pages/
-│   │   ├── AcervoPage.jsx       # Catálogo completo com pesquisa e filtros
-│   │   ├── AdminPage.jsx        # Portal do Administrador (Estoque, Encomendas e Site)
-│   │   ├── ContatoPage.jsx      # Página Fale Conosco
-│   │   ├── EncomendasPage.jsx   # Página de pedidos personalizados e eventos
-│   │   └── FaqPage.jsx          # Página de Perguntas Frequentes
-│   ├── styles/
-│   │   ├── style.css            # Estilos globais, variáveis, Home, Header e Footer
-│   │   ├── acervo.css           # Estilos da página de catálogo e filtros
-│   │   ├── admin.css            # Estilos do Portal do Administrador
-│   │   ├── authModal.css        # Estilos do modal de login e cadastro
-│   │   ├── contato.css          # Estilos da página Fale Conosco
-│   │   ├── encomendas.css       # Estilos da página de Encomendas
-│   │   ├── faq.css              # Estilos dos balões e layout do FAQ
-│   │   └── produtoModal.css     # Estilos do modal de detalhes e encomendas
-│   ├── App.jsx                  # Componente raiz e gerenciamento central de estado
-│   └── main.jsx                 # Ponto de entrada da aplicação React
-├── index.html
-├── package.json
+├── alvura-frontend/                 # 🎨 CAMADA DE VISÃO (React + Vite)
+│   ├── public/                      # Imagens, favicon e assets estáticos
+│   ├── src/
+│   │   ├── components/              # Modais, Header, Cards e botões
+│   │   ├── pages/                   # Telas principais (Home, Acervo, Admin, etc.)
+│   │   ├── styles/                  # Estilos modulares em CSS puro
+│   │   └── App.jsx                  # Componente raiz, rotas e chamadas (fetch) da API
+│   └── package.json
+│
+├── alvura-backend/                  # ⚙️ CAMADA DE SERVIDOR E DADOS (Spring Boot)
+│   ├── src/main/java/Alvura/backend/
+│   │   ├── config/                  # Semeadores de banco (AdminSeeder)
+│   │   ├── controller/              # Endpoints da API REST (ProdutoController, UsuarioController)
+│   │   ├── model/                   # Entidades do banco de dados (Produto, Usuario)
+│   │   ├── repository/              # Interfaces de comunicação com o PostgreSQL (JPA)
+│   │   └── service/                 # Regras de negócio e intermediação (ProdutoService)
+│   ├── src/main/resources/          # application.properties (Configurações do Spring/JPA)
+│   └── pom.xml
+│
+├── .gitignore                       # Ignora node_modules, compilados Java e senhas
 └── README.md
-
 ```
-
