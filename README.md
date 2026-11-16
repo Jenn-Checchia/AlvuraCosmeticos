@@ -71,7 +71,7 @@ Certifique-se de ter instalado em sua máquina:
    git clone [https://github.com/seu-usuario/alvura-cosmeticos.git](https://github.com/seu-usuario/alvura-cosmeticos.git)
 
 ```
-
+```
 2. **Acesse a pasta do projeto:**
 ```bash
 cd alvura-cosmeticos
