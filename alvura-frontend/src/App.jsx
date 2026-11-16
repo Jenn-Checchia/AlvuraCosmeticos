@@ -11,8 +11,13 @@ import ProdutoModal from "./components/ProdutoModal";
 import EncomendasPage from "./pages/EncomendasPage";
 import AuthModal from "./components/AuthModal";
 import AdminPage from "./pages/AdminPage";
+<<<<<<< HEAD
 // import { PRODUTOS_MOCK } from "./data/produtosMock";
 import { useState, useEffect } from 'react';
+=======
+import { PRODUTOS_MOCK } from "./data/produtosMock";
+import { useState } from 'react';
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
 
 const TELEFONE_ALVURA = "5567999999999";
 
@@ -31,6 +36,7 @@ export default function App() {
   const [paginaAtual, setPaginaAtual] = useState('home');
   const [authModalAberto, setAuthModalAberto] = useState(false);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
+<<<<<<< HEAD
   const [catalogoProdutos, setCatalogoProdutos] = useState([]);
 
   useEffect(() => {
@@ -39,6 +45,9 @@ export default function App() {
           .then(dados => setCatalogoProdutos(dados))
           .catch(erro => console.error("Erro ao carregar produtos:", erro));
   }, []);
+=======
+  const [catalogoProdutos, setCatalogoProdutos] = useState(PRODUTOS_MOCK);
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
 
   const [categorias, setCategorias] = useState([
     "Hidratante",
@@ -530,16 +539,25 @@ export default function App() {
         )}
 
 
+<<<<<<< HEAD
         {paginaAtual === "acervo" && (
           <AcervoPage
             produtos={catalogoProdutos} // <-- ADICIONE ESTA LINHA AQUI!
+=======
+     {paginaAtual === "acervo" && (
+          <AcervoPage
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
             onAddToCart={(produto) =>
               pedirWhatsApp(
                 `Olá! Gostaria de adicionar à sacola: ${produto.nome} (R$ ${produto.preco.toFixed(2).replace(".", ",")})`
               )
             }
             onSelectProduto={setProdutoSelecionado}
+<<<<<<< HEAD
             onAbrirEncomendas={() => {
+=======
+                        onAbrirEncomendas={() => {
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
               setPaginaAtual("encomendas");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
@@ -563,6 +581,7 @@ export default function App() {
                 prev.includes(novaCat) ? prev : [...prev, novaCat]
               )
             }
+<<<<<<< HEAD
             onAdicionarProduto={(novo) => {
               fetch('http://localhost:8080/api/produtos', {
                   method: 'POST',
@@ -615,6 +634,19 @@ export default function App() {
               })
               .catch(erro => console.error("Erro ao excluir:", erro));
             }}
+=======
+            onAdicionarProduto={(novo) =>
+              setCatalogoProdutos((prev) => [novo, ...prev])
+            }
+            onAtualizarProduto={(atualizado) =>
+              setCatalogoProdutos((prev) =>
+                prev.map((p) => (p.id === atualizado.id ? atualizado : p))
+              )
+            }
+            onExcluirProduto={(id) =>
+              setCatalogoProdutos((prev) => prev.filter((p) => p.id !== id))
+            }
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
             encomendas={encomendasAdmin}
             onAtualizarStatusEncomenda={(id, novoStatus) =>
               setEncomendasAdmin((prev) =>

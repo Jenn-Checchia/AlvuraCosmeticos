@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
+<<<<<<< HEAD
 //import { USUARIOS_MOCK } from "../data/usuarioMock";
+=======
+import { USUARIOS_MOCK } from "../data/usuarioMock";
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
 import "../styles/authModal.css";
 
 export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
@@ -33,11 +37,16 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
     setConfirmarSenha("");
   };
 
+<<<<<<< HEAD
 const handleSubmit = (e) => {
+=======
+  const handleSubmit = (e) => {
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
     e.preventDefault();
     setErro("");
 
     if (modo === "login") {
+<<<<<<< HEAD
       // --- LÓGICA REAL DE LOGIN ---
       fetch('http://localhost:8080/api/usuarios/login', {
         method: 'POST',
@@ -61,6 +70,24 @@ const handleSubmit = (e) => {
     }
 
     // --- VALIDAÇÕES DE REGISTRO ---
+=======
+      const usuarioEncontrado = USUARIOS_MOCK.find(
+        (u) =>
+          u.email.toLowerCase() === email.trim().toLowerCase() &&
+          u.senha === senha
+      );
+
+      if (!usuarioEncontrado) {
+        setErro("E-mail ou senha incorretos. Confira os dados e tente novamente.");
+        return;
+      }
+
+      onLoginSuccess(usuarioEncontrado);
+      onClose();
+      return;
+    }
+
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
     if (nome.trim().length < 2) {
       setErro("Por favor, informe seu nome completo.");
       return;
@@ -76,6 +103,7 @@ const handleSubmit = (e) => {
       return;
     }
 
+<<<<<<< HEAD
     // --- LÓGICA REAL DE REGISTRO ---
     const novoUsuario = {
       nome: nome.trim(),
@@ -100,6 +128,17 @@ const handleSubmit = (e) => {
       }
     })
     .catch(() => setErro("Erro de conexão. O servidor backend está rodando?"));
+=======
+    const novoUsuario = {
+      id: Date.now(),
+      nome: nome.trim(),
+      email: email.trim().toLowerCase(),
+      role: "cliente",
+    };
+
+    onLoginSuccess(novoUsuario);
+    onClose();
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
   };
 
   return (

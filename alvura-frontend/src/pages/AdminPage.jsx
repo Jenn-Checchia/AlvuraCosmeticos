@@ -147,11 +147,18 @@ export default function AdminPage({
 
     if (editandoId !== null) {
       onAtualizarProduto({ ...dados, id: editandoId });
+<<<<<<< HEAD
       // Mantemos o mostrarFeedback original do React
     } else {
       // Removemos o 'id: Date.now()'. O backend vai gerar o ID!
       onAdicionarProduto(dados);
       // Mantemos o mostrarFeedback original do React
+=======
+      mostrarFeedback("Produto atualizado!");
+    } else {
+      onAdicionarProduto({ ...dados, id: Date.now() });
+      mostrarFeedback("Novo produto cadastrado!");
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
     }
     cancelarEdicaoProduto();
   };
@@ -359,6 +366,7 @@ export default function AdminPage({
                     <input
                       type="text"
                       required
+<<<<<<< HEAD
                       placeholder="0,00"
                       value={formProd.preco}
                       onChange={(e) => {
@@ -378,6 +386,13 @@ export default function AdminPage({
                           
                         setFormProd({ ...formProd, preco: valorFormatado });
                       }}
+=======
+                      placeholder="38.90"
+                      value={formProd.preco}
+                      onChange={(e) =>
+                        setFormProd({ ...formProd, preco: e.target.value })
+                      }
+>>>>>>> 5e4afbb72e8619d2e1ed734d43697fcd90873cb8
                     />
                   </label>
 
