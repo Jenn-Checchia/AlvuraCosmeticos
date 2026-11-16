@@ -100,8 +100,8 @@ Abra o endereço exibido no terminal (geralmente `http://localhost:5173`).
 
 Para testar os diferentes níveis de acesso no modal **Minha conta**:
 
-* **Administrador:** `admin@alvura.com.br` | Senha: `123`
-* **Cliente:** `cliente@alvura.com.br` | Senha: `123`
+* **Administrador:** `admin@alvura.com.br` | Senha: `1234`
+* **Cliente:** `cliente@alvura.com.br` | Senha: `1234`
 
 
 
