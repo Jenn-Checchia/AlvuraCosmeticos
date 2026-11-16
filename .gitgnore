@@ -27,7 +27,7 @@ alvura-backend/target/
 # =========================================
 # 4. PASTAS DE SISTEMA E EDITORES
 # =========================================
-.vscode/
-.idea/
+.vscode
+.idea
 .DS_Store
 Thumbs.db
