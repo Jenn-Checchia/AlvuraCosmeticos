@@ -1,0 +1,165 @@
+.faq-page-section {
+  position: relative;
+  min-height: 78vh;
+  padding: 72px 24px 120px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.faq-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.faq-header {
+  text-align: center;
+  margin-bottom: 52px;
+}
+
+.faq-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(3.5rem, 6vw, 4.8rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.faq-header p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+/* Lista de balões */
+.faq-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.faq-balloon {
+  background-color: #7C3B00; /* Mesmo marrom âmbar da seção Luxo */
+  color: #FAF5EB;
+  border-radius: 36px;
+  padding: 24px 36px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 8px 24px rgba(124, 59, 0, 0.14);
+}
+
+.faq-balloon:hover,
+.faq-balloon.is-open {
+  background-color: #693100;
+  transform: translateY(-2px);
+}
+
+.faq-question-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+}
+
+.faq-chevron {
+  flex-shrink: 0;
+  transition: transform 0.35s ease;
+}
+
+/* Gira a seta ao passar o mouse ou abrir */
+.faq-balloon:hover .faq-chevron,
+.faq-balloon.is-open .faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* Animação suave da resposta ao passar o mouse (:hover) */
+.faq-answer-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.faq-balloon:hover .faq-answer-wrapper,
+.faq-balloon.is-open .faq-answer-wrapper {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+.faq-answer-inner p {
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(250, 245, 235, 0.2);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: rgba(250, 245, 235, 0.9);
+}
+
+/* Elementos decorativos nas laterais */
+.faq-decor {
+  position: absolute;
+  z-index: 1;
+  object-fit: cover;
+  pointer-events: none;
+  opacity: 0.92;
+  filter: drop-shadow(0 6px 12px rgba(35, 28, 24, 0.08));
+}
+
+.decor-top-left {
+  top: 140px;
+  left: 3%;
+  width: 160px;
+  height: 150px;
+  transform: rotate(-16deg);
+  mix-blend-mode: multiply; /* Funde o fundo branco do sabonete de cereja */
+  
+}
+
+.decor-bottom-left {
+  bottom: 10px;
+  left: 7%;
+  width: 140px;
+  height: 180px;
+  transform: rotate(353deg);
+}
+
+.decor-bottom-right {
+  bottom: 60px;
+  right: 3%;
+  width: 185px;
+  height: 170px;
+  transform: rotate(9deg);
+}
+
+@media (max-width: 960px) {
+  .faq-decor {
+    opacity: 0.22; /* Suaviza as imagens no tablet/celular para não atrapalhar a leitura */
+  }
+}
+
+@media (max-width: 560px) {
+  .faq-balloon {
+    padding: 20px 24px;
+    border-radius: 26px;
+  }
+  .faq-question-row {
+    font-size: 1.12rem;
+  }
+  .faq-decor {
+    display: none;
+  }
+}

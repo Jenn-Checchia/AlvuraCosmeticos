@@ -1,0 +1,637 @@
+/* =========================================
+   TELA INICIAL DO PORTAL (FUNDO VINHO)
+   ========================================= */
+.admin-portal-screen {
+  min-height: calc(100vh - 86px);
+  background-color: #4A1216;
+  color: #FAF5EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 32px 96px;
+}
+
+.admin-portal-inner {
+  width: 100%;
+  max-width: 1180px;
+  text-align: center;
+}
+
+.admin-portal-inner h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.6rem, 4.7vw, 3.85rem); /* +25% */
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #FAF5EB;
+  margin-bottom: 68px;
+}
+
+.admin-portal-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 36px;
+}
+
+.portal-choice-card {
+  background: transparent;
+  border: 1px solid rgba(250, 245, 235, 0.72);
+  border-radius: 36px;
+  padding: 52px 28px;
+  color: #FAF5EB;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 190px;
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
+}
+
+.portal-choice-card span {
+  font-family: var(--font-sans);
+  font-size: 1.65rem; /* +25% */
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.portal-choice-card small {
+  font-size: 0.95rem; /* +25% */
+  color: rgba(250, 245, 235, 0.7);
+}
+
+.portal-choice-card:hover {
+  background-color: rgba(250, 245, 235, 0.08);
+  border-color: #E5C158;
+  transform: translateY(-3px);
+}
+
+/* =========================================
+   SUBNAVEGAÇÃO E PÁGINAS INTERNAS DO ADMIN
+   ========================================= */
+.admin-page {
+  padding: 28px 36px 104px;
+  max-width: 1440px;
+  margin: 0 auto;
+  color: var(--text-dark);
+}
+
+.admin-subnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(124, 59, 0, 0.18);
+}
+
+.admin-portal-return {
+  border: none;
+  background: transparent;
+  color: #7C3B00;
+  font-size: 1.05rem; /* +25% */
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.admin-subnav-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-subnav-pills button {
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  background: transparent;
+  color: #7C3B00;
+  font-size: 0.98rem; /* +25% */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-subnav-pills button.is-active,
+.admin-subnav-pills button:hover {
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  border-color: #7C3B00;
+}
+
+.admin-header {
+  padding-bottom: 20px;
+  margin-bottom: 26px;
+}
+
+.admin-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.admin-eyebrow {
+  display: inline-block;
+  font-size: 0.9rem; /* +25% */
+  letter-spacing: 0.16em;
+  color: #7C3B00;
+  margin-bottom: 8px;
+}
+
+.admin-header h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 4.5vw, 3.5rem); /* +25% */
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.admin-header p {
+  font-size: 1.1rem; /* +25% */
+  color: var(--text-muted);
+}
+
+.admin-toast {
+  margin-bottom: 22px;
+  padding: 14px 22px;
+  border-radius: 14px;
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  font-size: 1.05rem; /* +25% */
+}
+
+/* Filtros de Status na Subtela Encomendas */
+.admin-status-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.status-filter-pill {
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  background-color: rgba(255, 255, 255, 0.55);
+  color: #7C3B00;
+  font-family: var(--font-sans);
+  font-size: 0.95rem; /* +25% */
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.status-filter-pill:hover {
+  border-color: #7C3B00;
+  background-color: rgba(124, 59, 0, 0.08);
+}
+
+.status-filter-pill.is-active {
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  border-color: #7C3B00;
+}
+
+.admin-empty-box {
+  padding: 36px 24px;
+  text-align: center;
+  border: 1px dashed rgba(124, 59, 0, 0.35);
+  border-radius: 20px;
+  font-size: 1.08rem;
+  color: var(--text-muted);
+}
+
+/* Grade Catálogo */
+.admin-grid {
+  display: grid;
+  grid-template-columns: 450px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.admin-form-card,
+.admin-list-card,
+.site-editor-col {
+  background-color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(184, 138, 46, 0.5);
+  border-radius: 22px;
+  padding: 28px;
+}
+
+.admin-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.admin-card-top h2,
+.admin-list-header h2,
+.site-editor-col h2 {
+  font-family: var(--font-serif);
+  font-size: 1.88rem; /* +25% */
+  font-weight: 500;
+  color: #7C3B00;
+  margin-bottom: 12px;
+}
+
+.admin-cancel-link {
+  border: none;
+  background: transparent;
+  color: #9E2A2B;
+  font-size: 0.94rem; /* +25% */
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.admin-form,
+.site-editor-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.adm-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.adm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.adm-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.adm-field > span,
+.adm-label-row > span {
+  font-size: 0.93rem; /* +25% */
+  font-weight: 500;
+  color: #7C3B00;
+}
+
+.adm-inline-link {
+  border: none;
+  background: transparent;
+  color: #7C3B00;
+  font-size: 0.9rem; /* +25% */
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.adm-new-cat-row {
+  display: flex;
+  gap: 8px;
+}
+
+.adm-small-save-btn {
+  padding: 0 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  font-size: 0.95rem; /* +25% */
+  cursor: pointer;
+}
+
+.adm-field input[type="text"],
+.adm-field input[type="email"],
+.adm-field select,
+.adm-field textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  font-family: var(--font-sans);
+  font-size: 1.02rem; /* +25% */
+  color: var(--text-dark);
+  outline: none;
+}
+
+.adm-image-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid rgba(124, 59, 0, 0.28);
+  border-radius: 12px;
+  background-color: #FFFFFF;
+}
+
+.adm-img-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.adm-image-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.adm-upload-btn {
+  display: inline-block;
+  text-align: center;
+  padding: 7px 12px;
+  border: 1px dashed #7C3B00;
+  border-radius: 8px;
+  font-size: 0.9rem; /* +25% */
+  color: #7C3B00;
+  cursor: pointer;
+}
+
+.adm-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem; /* +25% */
+  cursor: pointer;
+}
+
+.adm-submit-btn {
+  margin-top: 6px;
+  padding: 15px 24px;
+  border: none;
+  border-radius: 999px;
+  background-color: #7C3B00;
+  color: #FAF5EB;
+  font-size: 1.05rem; /* +25% */
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Tabela de Produtos */
+.admin-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.admin-search {
+  padding: 10px 18px;
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  border-radius: 999px;
+  background-color: #FFFFFF;
+  font-size: 1rem; /* +25% */
+  min-width: 260px;
+}
+
+.admin-table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.02rem; /* +25% */
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid rgba(124, 59, 0, 0.25);
+  font-size: 0.9rem; /* +25% */
+  text-transform: uppercase;
+  color: #7C3B00;
+}
+
+.admin-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(124, 59, 0, 0.12);
+}
+
+.adm-prod-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.adm-prod-cell img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.adm-prod-cell strong {
+  display: block;
+  font-weight: 500;
+}
+
+.adm-prod-cell small {
+  font-size: 0.88rem; /* +25% */
+  color: var(--text-muted);
+}
+
+.adm-price {
+  font-weight: 600;
+  color: #7C3B00;
+  white-space: nowrap;
+}
+
+.status-toggle-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.88rem; /* +25% */
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.status-toggle-btn.in-stock {
+  background-color: rgba(46, 125, 50, 0.12);
+  color: #2E7D32;
+  border-color: rgba(46, 125, 50, 0.3);
+}
+
+.status-toggle-btn.on-order {
+  background-color: rgba(124, 59, 0, 0.1);
+  color: #7C3B00;
+  border-color: rgba(124, 59, 0, 0.3);
+}
+
+.adm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.adm-action-btn {
+  padding: 6px 13px;
+  border-radius: 8px;
+  font-size: 0.9rem; /* +25% */
+  cursor: pointer;
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  background: transparent;
+  color: #7C3B00;
+}
+
+.adm-action-btn.delete {
+  border-color: rgba(158, 42, 43, 0.4);
+  color: #9E2A2B;
+}
+
+/* Subtela Encomendas */
+.admin-encomendas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 22px;
+}
+
+.admin-enc-card {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(184, 138, 46, 0.5);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-enc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-enc-tag {
+  font-size: 0.85rem; /* +25% */
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7C3B00;
+  font-weight: 600;
+}
+
+.enc-status-select {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.9rem; /* +25% */
+  border: 1px solid rgba(124, 59, 0, 0.35);
+  background-color: #FFFFFF;
+  color: #7C3B00;
+}
+
+.admin-enc-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.68rem; /* +25% */
+  font-weight: 500;
+}
+
+.admin-enc-meta {
+  font-size: 1rem; /* +25% */
+  color: var(--text-dark);
+}
+
+.admin-enc-obs {
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background-color: rgba(124, 59, 0, 0.06);
+  font-size: 0.98rem; /* +25% */
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Subtela Editar Dados do Site */
+.admin-site-editor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* =========================================
+   RESPONSIVIDADE MOBILE (ACERVO & ADMIN)
+   ========================================= */
+@media (max-width: 960px) {
+  .admin-portal-cards,
+  .admin-grid,
+  .admin-site-editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-page {
+    padding: 20px 16px 80px;
+  }
+
+  .admin-form-card,
+  .admin-list-card,
+  .site-editor-col {
+    padding: 18px 16px;
+    border-radius: 18px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .adm-row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .adm-image-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .adm-image-controls {
+    width: 100%;
+  }
+
+  .admin-search {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Transforma a tabela do Acervo em cards empilhados no celular */
+  .admin-table thead {
+    display: none;
+  }
+
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-table tr {
+    border: 1px solid rgba(124, 59, 0, 0.22);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+
+  .admin-table td {
+    padding: 6px 0;
+    border-bottom: none;
+  }
+
+  .adm-actions {
+    margin-top: 6px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(124, 59, 0, 0.12);
+    justify-content: flex-end;
+  }
+}
