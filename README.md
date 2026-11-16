@@ -1,4 +1,4 @@
-```markdown
+```
 # 🌿 Alvura — Natural Cosméticos
 
 E-commerce artesanal desenvolvido em **React + Vite** para a marca **Alvura Natural Cosméticos**, focado em uma estética botânica acolhedora, tipografia editorial (serifada e sans-serif) e experiência de compra fluida com suporte a encomendas personalizadas e painel de gestão integrado.
