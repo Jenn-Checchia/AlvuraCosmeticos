@@ -59,7 +59,10 @@ export default function CartDrawer({
         <header className="cart-header">
           <div>
             <span className="cart-eyebrow">ALVURA COSMÉTICOS</span>
-            <h2>Sua Sacola ({itens.reduce((acc, i) => acc + i.quantidade, 0)})</h2>
+            {(() => {
+              const totalItens = itens.reduce((acc, i) => acc + i.quantidade, 0);
+              return <h2>Sua Sacola{totalItens > 0 ? ` (${totalItens})` : ""}</h2>;
+            })()}
           </div>
           <button
             type="button"
