@@ -64,49 +64,67 @@ E-commerce artesanal full-stack desenvolvido em **React + Vite** (Frontend) e **
 Certifique-se de ter instalado em sua máquina:
 - **Node.js** (v18+) e **npm/yarn**
 - **Java JDK** (v17 ou superior)
-- **PostgreSQL** e **pgAdmin**
 
-### Passo 1: Configuração do Banco de Dados
-1. Abra o pgAdmin e crie um novo banco de dados vazio chamado `alvura_db`.
-
-### Passo 2: Clonar e Configurar o Repositório
+### Passo 1: Clonar o Repositório
 ```bash
-git clone https://github.com/seu-usuario/alvura-cosmeticos.git
+git clone [https://github.com/seu-usuario/alvura-cosmeticos.git](https://github.com/seu-usuario/alvura-cosmeticos.git)
 cd alvura-cosmeticos
+
 ```
 
+### Passo 2: Configuração de Segurança e Banco de Dados
+
+Para proteger dados sensíveis (como senhas de banco de dados na nuvem), este projeto utiliza um arquivo de *template* que é ignorado pelo Git.
+
+1. Navegue até a pasta de configurações do backend:
+```bash
+cd alvura-backend/src/main/resources/
+
+```
+
+
+2. Crie uma cópia do arquivo `application-secret-template.properties` e renomeie a cópia para **`application-secret.properties`**.
+3. Abra o novo arquivo `application-secret.properties` e insira a senha do banco de dados (solicite a credencial ao administrador do projeto ou insira os dados do seu PostgreSQL local).
+
 ### Passo 3: Executar o Backend (Java Spring Boot)
-1. Navegue até a pasta do backend:
-   ```bash
-   cd alvura-backend
-   ```
-2. Verifique o arquivo `src/main/resources/application-secret.properties` e garanta que as credenciais correspondem ao seu PostgreSQL local (usuário e senha).
-3. Inicie a aplicação (as tabelas e o usuário administrador serão criados automaticamente):
-   ```bash
-   ./mvnw spring-boot:run
-   # No Windows: .\mvnw.cmd spring-boot:run
-   ```
-   *O backend rodará na porta `8080`.*
+
+1. Volte para a raiz da pasta do backend (`alvura-backend`).
+2. Inicie a aplicação:
+```bash
+./mvnw spring-boot:run
+# No Windows: .\mvnw.cmd spring-boot:run
+
+```
+
+
+*O backend rodará na porta `8080`. Se o banco de dados estiver vazio, o Hibernate criará as tabelas e o administrador mestre automaticamente.*
 
 ### Passo 4: Executar o Frontend (React)
+
 1. Abra uma nova aba no terminal e navegue até a pasta do frontend:
-   ```bash
-   cd alvura-frontend
-   ```
+```bash
+cd ../alvura-frontend
+
+```
+
+
 2. Instale as dependências e inicie o servidor:
-   ```bash
-   npm install
-   npm run dev
-   ```
+```bash
+npm install
+npm run dev
+
+```
+
+
 3. Acesse no navegador: `http://localhost:5173`.
 
 ---
 
 ## 🔑 Credenciais de Teste
 
-Ao rodar o backend pela primeira vez, o *Seeder* do banco de dados cria automaticamente a conta principal para você testar a aplicação:
+Ao rodar o backend conectado a um banco vazio pela primeira vez, o *Seeder* da aplicação cria automaticamente a conta principal para testes:
 
-- **Administrador:** `admin@alvura.com.br` | Senha: `1234`
+* **Administrador:** `admin@alvura.com.br` | Senha: `1234`
 *(Você pode criar contas de clientes comuns utilizando o próprio botão "Registre-se" no site).*
 
 ---
@@ -131,9 +149,14 @@ alvura-cosmeticos/
 │   │   ├── model/                   # Entidades do banco de dados (Produto, Usuario)
 │   │   ├── repository/              # Interfaces de comunicação com o PostgreSQL (JPA)
 │   │   └── service/                 # Regras de negócio e intermediação (ProdutoService)
-│   ├── src/main/resources/          # application.properties (Configurações do Spring/JPA)
+│   ├── src/main/resources/          # application.properties e templates de credenciais
 │   └── pom.xml
 │
 ├── .gitignore                       # Ignora node_modules, compilados Java e senhas
 └── README.md
+
+```
+
+```
+
 ```
