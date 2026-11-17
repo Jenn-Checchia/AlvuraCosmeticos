@@ -19,6 +19,7 @@ npm-debug.log*
 # 3. BACKEND (Java / Spring Boot / Maven)
 # =========================================
 alvura-backend/target/
+alvura-backend/uploads/
 *.class
 *.jar
 *.war

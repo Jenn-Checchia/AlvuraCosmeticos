@@ -13,6 +13,7 @@ const IMAGENS_PADRAO = [
 ];
 
 export default function AdminPage({
+    usuarioLogado,
     produtos,
     categorias,
     onAdicionarCategoria,
@@ -21,6 +22,7 @@ export default function AdminPage({
     onExcluirProduto,
     encomendas,
     onAtualizarStatusEncomenda,
+    onExcluirEncomenda,
     configSite,
     onSalvarConfigSite,
     resetTrigger,
@@ -51,6 +53,62 @@ export default function AdminPage({
   const [criandoCategoria, setCriandoCategoria] = useState(false);
   const [novaCategoriaNome, setNovaCategoriaNome] = useState("");
   const [feedback, setFeedback] = useState("");
+
+  const [listaAdmins, setListaAdmins] = useState([]);
+  const [novoAdmin, setNovoAdmin] = useState({ nome: "", email: "", senha: "" });
+
+  useEffect(() => {
+    if (abaAtual === "admins") {
+      fetch("http://localhost:8080/api/usuarios")
+        .then((res) => res.json())
+        .then((dados) => setListaAdmins(dados.filter((u) => u.role === "admin")))
+        .catch((err) => console.error("Erro ao buscar admins:", err));
+    }
+  }, [abaAtual]);
+
+  const handleCriarAdmin = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:8080/api/usuarios/registro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nome: novoAdmin.nome.trim(),
+        email: novoAdmin.email.trim().toLowerCase(),
+        senha: novoAdmin.senha,
+        role: "admin",
+      }),
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(await res.text());
+        return res.json();
+      })
+      .then((criado) => {
+        setListaAdmins((prev) => [...prev, criado]);
+        setNovoAdmin({ nome: "", email: "", senha: "" });
+        mostrarFeedback(`Administrador "${criado.nome}" cadastrado com sucesso!`);
+      })
+      .catch((err) => mostrarFeedback(err.message || "Erro ao criar administrador."));
+  };
+
+  const handleExcluirAdmin = (id, nome) => {
+    // Proteção: não deixa o admin atual excluir a própria conta
+    if (usuarioLogado?.id === id) {
+      alert("Você não pode excluir a sua própria conta enquanto estiver logado.");
+      return;
+    }
+
+    if (window.confirm(`Tem certeza que deseja revogar o acesso do administrador "${nome}"?`)) {
+      fetch(`http://localhost:8080/api/usuarios/${id}`, {
+        method: "DELETE"
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Falha ao excluir.");
+        setListaAdmins(prev => prev.filter(adm => adm.id !== id));
+        mostrarFeedback(`Acesso de "${nome}" revogado com sucesso.`);
+      })
+      .catch(err => mostrarFeedback(err.message));
+    }
+  };
 
   // --- Estados da Edição de Dados do Site ---
   const [formSite, setFormSite] = useState(configSite);
@@ -239,6 +297,16 @@ export default function AdminPage({
               <span>Editar dados do site</span>
               <small>Contatos, textos e imagens</small>
             </button>
+
+            <button
+              type="button"
+              className="portal-choice-card"
+              onClick={() => setAbaAtual("admins")}
+            >
+              <span>Administradores</span>
+              <small>Gerenciar acessos da equipe</small>
+            </button>
+
           </div>
         </div>
       </main>
@@ -640,10 +708,10 @@ export default function AdminPage({
           SUBTELA 2: ENCOMENDAS & ORÇAMENTOS
           ========================================= */}
       {abaAtual === "encomendas" && (() => {
-        const statusOpcoes = ["Todos", "Novo", "Em produção", "Concluído"];
+        const statusOpcoes = ["Todos", "Novo", "Em produção", "Concluído", "Arquivado"];
         const encomendasFiltradas =
           filtroStatusEncomenda === "Todos"
-            ? encomendas
+            ? encomendas.filter((e) => e.status !== "Arquivado") // Esconde arquivados da visão geral
             : encomendas.filter((e) => e.status === filtroStatusEncomenda);
 
         return (
@@ -705,6 +773,7 @@ export default function AdminPage({
                         <option value="Novo">Novo</option>
                         <option value="Em produção">Em produção</option>
                         <option value="Concluído">Concluído</option>
+                        <option value="Arquivado">Arquivado / Oculto</option>
                       </select>
                     </div>
 
@@ -726,6 +795,19 @@ export default function AdminPage({
                     {enc.observacoes && (
                       <p className="admin-enc-obs">“{enc.observacoes}”</p>
                     )}
+                    <div style={{ marginTop: "16px", textAlign: "right" }}>
+                      <button
+                        type="button"
+                        className="adm-action-btn delete"
+                        onClick={() => {
+                          if (window.confirm(`Excluir permanentemente a encomenda de ${enc.cliente}?`)) {
+                            onExcluirEncomenda(enc.id);
+                          }
+                        }}
+                      >
+                        Excluir permanentemente
+                      </button>
+                    </div>
                   </article>
                 ))}
               </div>
@@ -912,6 +994,107 @@ export default function AdminPage({
           </form>
         </>
       )}
+
+      {abaAtual === "admins" && (
+        <>
+          <header className="admin-header">
+            <div>
+              <span className="admin-eyebrow">CONTROLE DE ACESSO</span>
+              <h1>Equipe &amp; Administradores</h1>
+              <p>Cadastre novas contas com permissão total de gestão da loja.</p>
+            </div>
+          </header>
+
+          <div className="admin-grid">
+            <section className="admin-form-card">
+              <h2>Novo Administrador</h2>
+              <form className="admin-form" onSubmit={handleCriarAdmin}>
+                <label className="adm-field">
+                  <span>Nome completo</span>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Ex: Maria Silva"
+                    value={novoAdmin.nome}
+                    onChange={(e) => setNovoAdmin({ ...novoAdmin, nome: e.target.value })}
+                  />
+                </label>
+
+                
+
+                <label className="adm-field">
+                  <span>E-mail de acesso</span>
+                  <input
+                    type="email"
+                    required
+                    placeholder="maria@alvura.com.br"
+                    value={novoAdmin.email}
+                    onChange={(e) => setNovoAdmin({ ...novoAdmin, email: e.target.value })}
+                  />
+                </label>
+
+                <label className="adm-field">
+                  <span>Senha inicial</span>
+                  <input
+                    type="password"
+                    required
+                    minLength={3}
+                    placeholder="••••••••"
+                    value={novoAdmin.senha}
+                    onChange={(e) => setNovoAdmin({ ...novoAdmin, senha: e.target.value })}
+                  />
+                </label>
+
+                <button type="submit" className="adm-submit-btn">
+                  + Cadastrar Administrador
+                </button>
+              </form>
+            </section>
+
+            <section className="admin-list-card">
+              <div className="admin-list-header">
+                <h2>Administradores ativos ({listaAdmins.length})</h2>
+              </div>
+              <div className="admin-table-wrapper">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>E-mail</th>
+                      <th>Permissão</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {listaAdmins.map((adm) => (
+                      <tr key={adm.id}>
+                        <td><strong>{adm.nome}</strong></td>
+                        <td>{adm.email}</td>
+                        <td>
+                          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                            <span className="status-toggle-btn in-stock" style={{ cursor: "default", margin: 0 }}>
+                              Admin
+                            </span>
+                            {usuarioLogado?.id !== adm.id && (
+                              <button
+                                type="button"
+                                className="adm-action-btn delete"
+                                onClick={() => handleExcluirAdmin(adm.id, adm.nome)}
+                              >
+                                Excluir
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </>
+      )}
+
     </main>
   );
 }

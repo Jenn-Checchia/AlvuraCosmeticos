@@ -9,6 +9,7 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }) {
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [erro, setErro] = useState("");
+  const [manterConectado, setManterConectado] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -47,7 +48,7 @@ const handleSubmit = (e) => {
       .then(async (res) => {
         if (res.ok) {
           const usuarioLogado = await res.json();
-          onLoginSuccess(usuarioLogado);
+          onLoginSuccess(usuarioLogado, manterConectado);
           onClose();
         } else {
           // Lê a mensagem de erro enviada pelo Java (ex: "E-mail ou senha inválidos.")
@@ -92,7 +93,7 @@ const handleSubmit = (e) => {
     .then(async (res) => {
       if (res.ok) {
         const usuarioSalvo = await res.json();
-        onLoginSuccess(usuarioSalvo); // Loga o usuário automaticamente após criar
+        onLoginSuccess(usuarioSalvo, manterConectado); // Loga o usuário automaticamente após criar
         onClose();
       } else {
         const msgErro = await res.text();
@@ -182,7 +183,27 @@ const handleSubmit = (e) => {
               />
             </label>
           )}
-
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              fontSize: "0.85rem",
+              color: "#5A4638",
+              cursor: "pointer",
+              marginTop: "4px",
+              userSelect: "none",
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={manterConectado}
+              onChange={(e) => setManterConectado(e.target.checked)}
+              style={{ accentColor: "#7C3B00", width: "15px", height: "15px", cursor: "pointer" }}
+            />
+            <span>Manter conectado neste dispositivo</span>
+          </label>
+          
           {erro && <p className="auth-error-msg">{erro}</p>}
 
           <button type="submit" className="auth-submit-btn">

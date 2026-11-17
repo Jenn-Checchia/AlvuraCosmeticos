@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     
     // O Spring cria o SQL automaticamente: "SELECT * FROM usuario WHERE email = ? AND senha = ?"
-    Optional<Usuario> findByEmailAndSenha(String email, String senha);
+    Optional<Usuario> findByEmail(String email);
 }

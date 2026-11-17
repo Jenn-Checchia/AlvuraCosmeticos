@@ -64,7 +64,15 @@ export default function App() {
   
   const [paginaAtual, setPaginaAtual] = useState('home');
   const [authModalAberto, setAuthModalAberto] = useState(false);
-  const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const [usuarioLogado, setUsuarioLogado] = useState(() => {
+    const salvoLocal = localStorage.getItem("alvura_usuario");
+    if (salvoLocal) return JSON.parse(salvoLocal);
+
+    const salvoSessao = sessionStorage.getItem("alvura_usuario");
+    if (salvoSessao) return JSON.parse(salvoSessao);
+
+    return null;
+  });
   const [catalogoProdutos, setCatalogoProdutos] = useState([]);
   const [faqPerguntaInicial, setFaqPerguntaInicial] = useState(null);
 
@@ -102,31 +110,7 @@ export default function App() {
     "Kits",
   ]);
 
-  const [encomendasAdmin, setEncomendasAdmin] = useState([
-    {
-      id: 1,
-      cliente: "Camila & Rafael (Casamento)",
-      ocasiao: "Casamento / Noivado",
-      endereco: "Rua das Flores, 123 - Bairro Jardim",
-      produto: "Mini Velas Aromáticas",
-      quantidade: "50 a 99 unidades",
-      aromas: "Cereja e Avelã, Mel e Camomila",
-      dataEvento: "2026-12-14",
-      observacoes: "Tag com iniciais C & R em dourado e fita off-white.",
-      status: "Em produção",
-    },
-    {
-      id: 2,
-      cliente: "Estúdio Botânica Arquitetura",
-      ocasiao: "Brinde Corporativo",
-      produto: "Kits Presenteáveis Completos",
-      quantidade: "30 a 49 unidades",
-      aromas: "Patchouli Floral",
-      dataEvento: "2026-12-20",
-      observacoes: "Presentes de final de ano para clientes.",
-      status: "Novo",
-    },
-  ]);
+  const [encomendasAdmin, setEncomendasAdmin] = useState([]);
 
   const [configSite, setConfigSite] = useState({
     whatsapp: "5567999999999",
@@ -157,16 +141,29 @@ export default function App() {
 
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
 
-  // No App.jsx:
 const [carrinhoAberto, setCarrinhoAberto] = useState(false);
-const [itensCarrinho, setItensCarrinho] = useState(() => {
-  const salvo = localStorage.getItem("alvura_carrinho");
-  return salvo ? JSON.parse(salvo) : [];
-});
 
-useEffect(() => {
-  localStorage.setItem("alvura_carrinho", JSON.stringify(itensCarrinho));
-}, [itensCarrinho]);
+  // Define a chave exclusiva do carrinho para a conta atual (ou visitante)
+  const chaveCarrinho = usuarioLogado?.email
+    ? `alvura_carrinho_${usuarioLogado.email}`
+    : "alvura_carrinho_visitante";
+
+  const [itensCarrinho, setItensCarrinho] = useState(() => {
+    const salvo = localStorage.getItem(chaveCarrinho);
+    return salvo ? JSON.parse(salvo) : [];
+  });
+
+  // Troca o carrinho automaticamente na tela sempre que logar/deslogar
+  useEffect(() => {
+    const salvo = localStorage.getItem(chaveCarrinho);
+    setItensCarrinho(salvo ? JSON.parse(salvo) : []);
+    setCarrinhoAberto(false);
+  }, [chaveCarrinho]);
+
+  // Salva as alterações apenas na gaveta do usuário atual
+  useEffect(() => {
+    localStorage.setItem(chaveCarrinho, JSON.stringify(itensCarrinho));
+  }, [itensCarrinho, chaveCarrinho]);
 
 const adicionarAoCarrinho = (produto, quantidade = 1, aromaSelecionado = null) => {
   setItensCarrinho((prev) => {
@@ -250,6 +247,8 @@ const totalItensCarrinho = itensCarrinho.reduce(
           onAuthClick={() => setAuthModalAberto(true)}
           onLogout={() => {
             setUsuarioLogado(null);
+            localStorage.removeItem("alvura_usuario");
+            sessionStorage.removeItem("alvura_usuario");
             if (paginaAtual === "admin") setPaginaAtual("home");
           }}
         />
@@ -729,6 +728,7 @@ const totalItensCarrinho = itensCarrinho.reduce(
      
       {paginaAtual === "admin" && usuarioLogado?.role === "admin" && (
           <AdminPage
+            usuarioLogado={usuarioLogado}
             produtos={catalogoProdutos}
             categorias={categorias}
             onAdicionarCategoria={(novaCat) => {
@@ -830,6 +830,17 @@ const totalItensCarrinho = itensCarrinho.reduce(
                 );
               })
               .catch(erro => console.error("Erro ao atualizar status:", erro));
+            }}
+            onExcluirEncomenda={(id) => {
+              const backup = [...encomendasAdmin];
+              setEncomendasAdmin((prev) => prev.filter((e) => e.id !== id));
+              
+              fetch(`http://localhost:8080/api/encomendas/${id}`, { method: 'DELETE' })
+                .then((res) => { if (!res.ok) throw new Error("Falha na exclusão"); })
+                .catch((err) => {
+                  console.error(err);
+                  setEncomendasAdmin(backup); // Rollback
+                });
             }}
             configSite={configSite}
             onSalvarConfigSite={(novosDados) => {
@@ -1060,8 +1071,17 @@ const totalItensCarrinho = itensCarrinho.reduce(
       <AuthModal
         isOpen={authModalAberto}
         onClose={() => setAuthModalAberto(false)}
-        onLoginSuccess={(usuario) => {
+        onLoginSuccess={(usuario, manterConectado) => {
           setUsuarioLogado(usuario);
+          
+          if (manterConectado) {
+            localStorage.setItem("alvura_usuario", JSON.stringify(usuario));
+            sessionStorage.removeItem("alvura_usuario");
+          } else {
+            sessionStorage.setItem("alvura_usuario", JSON.stringify(usuario));
+            localStorage.removeItem("alvura_usuario");
+          }
+
           if (usuario.role === "admin") {
             setPaginaAtual("admin");
           }
