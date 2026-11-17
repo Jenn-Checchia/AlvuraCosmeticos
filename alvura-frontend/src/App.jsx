@@ -39,9 +39,23 @@ export default function App() {
     };
   
   function pedirWhatsApp(itemOuTexto) {
-    const nome = typeof itemOuTexto === 'string' ? itemOuTexto : `${itemOuTexto.nome} (R$ ${itemOuTexto.preco.toFixed(2).replace('.', ',')})`;
-    const texto = `Olá, Alvura! Vi no catálogo e gostaria de pedir: ${nome}`;
-    window.open(`https://wa.me/${configSite.whatsapp}?text=${encodeURIComponent(texto)}`, '_blank');
+    let textoFinal = "";
+
+    if (typeof itemOuTexto === 'string') {
+      // Se for um clique no Filtro de Categorias da Home
+      if (itemOuTexto.startsWith("Linha de")) {
+        textoFinal = `Olá, Alvura! Gostaria de saber mais sobre a ${itemOuTexto}.`;
+      } else {
+        // Se vier da página Contato, Newsletter ou Encomendas, a frase já vem montada!
+        textoFinal = itemOuTexto;
+      }
+    } else {
+      // Se for um objeto (clique em um produto individual)
+      const nomeProduto = `${itemOuTexto.nome} (R$ ${itemOuTexto.preco.toFixed(2).replace('.', ',')})`;
+      textoFinal = `Olá, Alvura! Vi no catálogo e gostaria de pedir: ${nomeProduto}`;
+    }
+
+    window.open(`https://wa.me/${configSite.whatsapp}?text=${encodeURIComponent(textoFinal)}`, '_blank');
   }
   
   function rolarParaCatalogo() {
@@ -55,10 +69,29 @@ export default function App() {
   const [faqPerguntaInicial, setFaqPerguntaInicial] = useState(null);
 
   useEffect(() => {
+      // Busca categorias
+      fetch('http://localhost:8080/api/categorias')
+          .then(res => res.json())
+          .then(dados => setCategorias(dados.map(cat => cat.nome))) // Extrai só o texto!
+          .catch(erro => console.error("Erro ao carregar categorias:", erro));
+
+      // Busca produtos
       fetch('http://localhost:8080/api/produtos')
           .then(res => res.json())
           .then(dados => setCatalogoProdutos(dados))
           .catch(erro => console.error("Erro ao carregar produtos:", erro));
+
+      // Busca encomendas
+      fetch('http://localhost:8080/api/encomendas')
+          .then(res => res.json())
+          .then(dados => setEncomendasAdmin(dados))
+          .catch(erro => console.error("Erro ao carregar encomendas:", erro));
+
+      // Busca configurações globais do site
+      fetch('http://localhost:8080/api/config')
+          .then(res => res.json())
+          .then(dados => setConfigSite(dados))
+          .catch(erro => console.error("Erro ao carregar configs:", erro));
   }, []);
 
   const [categorias, setCategorias] = useState([
@@ -74,6 +107,7 @@ export default function App() {
       id: 1,
       cliente: "Camila & Rafael (Casamento)",
       ocasiao: "Casamento / Noivado",
+      endereco: "Rua das Flores, 123 - Bairro Jardim",
       produto: "Mini Velas Aromáticas",
       quantidade: "50 a 99 unidades",
       aromas: "Cereja e Avelã, Mel e Camomila",
@@ -203,13 +237,13 @@ const totalItensCarrinho = itensCarrinho.reduce(
     <div className="page-wrapper">
 
         <Header
-          onCartClick={() => setCarrinhoAberto(true)}
-          cartCount={totalItensCarrinho}
-          onNavigate={(destino) => {
-            setPaginaAtual(destino);
-            if (destino === "admin") {
-              setAdminResetTrigger((n) => n + 1);
-            }
+            onCartClick={() => setCarrinhoAberto(true)}
+            cartCount={totalItensCarrinho}
+            onNavigate={(destino) => {
+              setPaginaAtual(destino);
+              if (destino === "admin") {
+                setAdminResetTrigger((n) => n + 1);
+              }
           }}
           paginaAtual={paginaAtual}
           usuarioLogado={usuarioLogado}
@@ -647,15 +681,30 @@ const totalItensCarrinho = itensCarrinho.reduce(
       )}    {/*Fim da home*/}
     </div>
 
-       {paginaAtual === "encomendas" && (
+    {paginaAtual === "encomendas" && (
           <EncomendasPage
-            onSolicitarOrcamento={(mensagem) => pedirWhatsApp(mensagem)}
+            onSolicitarOrcamento={(dadosParaBanco, mensagemWhatsApp) => {
+              // Salva no banco de dados primeiro
+              fetch('http://localhost:8080/api/encomendas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosParaBanco)
+              })
+              .then(res => res.json())
+              .then(novaEncomendaSalva => {
+                 // Atualiza a lista do Admin em tempo real
+                 setEncomendasAdmin((prev) => [novaEncomendaSalva, ...prev]);
+                 // Redireciona o cliente para o WhatsApp
+                 pedirWhatsApp(mensagemWhatsApp);
+              })
+              .catch(erro => console.error("Erro ao salvar encomenda:", erro));
+            }}
             onVoltarAcervo={() => {
               setPaginaAtual("acervo");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
         />
-        )}
+      )}
 
 
         {paginaAtual === "acervo" && (
@@ -682,11 +731,23 @@ const totalItensCarrinho = itensCarrinho.reduce(
           <AdminPage
             produtos={catalogoProdutos}
             categorias={categorias}
-            onAdicionarCategoria={(novaCat) =>
+            onAdicionarCategoria={(novaCat) => {
+              // Atualização Otimista na tela
               setCategorias((prev) =>
                 prev.includes(novaCat) ? prev : [...prev, novaCat]
-              )
-            }
+              );
+
+              // Gravação no Banco de Dados
+              fetch('http://localhost:8080/api/categorias', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome: novaCat })
+              })
+              .then(res => {
+                if (!res.ok) throw new Error("Falha ao salvar categoria no banco.");
+              })
+              .catch(erro => console.error("Erro:", erro));
+            }}
             onAdicionarProduto={(novo) => {
               fetch('http://localhost:8080/api/produtos', {
                   method: 'POST',
@@ -694,59 +755,104 @@ const totalItensCarrinho = itensCarrinho.reduce(
                   body: JSON.stringify(novo)
               })
               .then(res => {
-                  // Se o Java retornar erro (400, 500), bloqueia a Tela Branca
-                  if (!res.ok) {
-                      throw new Error(`O servidor recusou o cadastro. Código: ${res.status}`);
-                  }
+                  if (!res.ok) throw new Error(`Código: ${res.status}`);
                   return res.json();
               })
               .then(produtoSalvoBanco => {
                   setCatalogoProdutos((prev) => [produtoSalvoBanco, ...prev]);
-                  alert("Produto cadastrado com sucesso no Banco de Dados!");
               })
               .catch(erro => {
                   console.error("Erro fatal ao salvar produto:", erro);
-                  alert("Falha ao cadastrar. Olhe o terminal do Java (VS Code) para ver o motivo.");
               });
             }}
+
             onAtualizarProduto={(atualizado) => {
-              // Envia o PUT (Edição) para o Java
+              // 1. Guarda uma cópia de segurança do estado anterior (para Rollback se falhar)
+              const backupCatalogo = [...catalogoProdutos];
+
+              // 2. ATUALIZAÇÃO OTIMISTA: Muda na tela instantaneamente (0ms de espera!)
+              setCatalogoProdutos((prev) =>
+                prev.map((p) => (p.id === atualizado.id ? atualizado : p))
+              );
+
+              // 3. Envia a requisição em segundo plano e aguarda o "ACK" do servidor
               fetch(`http://localhost:8080/api/produtos/${atualizado.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(atualizado)
               })
-              .then(res => res.json())
-              .then(produtoAtualizado => {
-                setCatalogoProdutos((prev) =>
-                  prev.map((p) => (p.id === produtoAtualizado.id ? produtoAtualizado : p))
-                );
-                alert("Produto atualizado com sucesso!");
+              .then(res => {
+                if (!res.ok) throw new Error("Falha ao confirmar atualização no servidor");
+                return res.json();
               })
-              .catch(erro => console.error("Erro ao atualizar:", erro));
+              .then(produtoConfirmado => {
+                // Sincroniza silenciosamente com o objeto exato retornado pelo banco
+                setCatalogoProdutos((prev) =>
+                  prev.map((p) => (p.id === produtoConfirmado.id ? produtoConfirmado : p))
+                );
+              })
+              .catch(erro => {
+                console.error("Erro ao atualizar (executando Rollback):", erro);
+                // 4. ROLLBACK: Se o pacote falhou, desfaz a alteração na tela
+                setCatalogoProdutos(backupCatalogo);
+              });
             }}
             
             onExcluirProduto={(id) => {
-              // Envia o DELETE para o Java
+              // 1. Backup para Rollback
+              const backupCatalogo = [...catalogoProdutos];
+
+              // 2. Remove da tela instantaneamente
+              setCatalogoProdutos((prev) => prev.filter((p) => p.id !== id));
+
+              // 3. Confirma a exclusão no banco em segundo plano
               fetch(`http://localhost:8080/api/produtos/${id}`, {
                 method: 'DELETE'
               })
               .then(res => {
-                if (res.ok) {
-                  setCatalogoProdutos((prev) => prev.filter((p) => p.id !== id));
-                  alert("Produto excluído do banco de dados!");
-                }
+                if (!res.ok) throw new Error("Falha ao excluir no servidor");
               })
-              .catch(erro => console.error("Erro ao excluir:", erro));
+              .catch(erro => {
+                console.error("Erro ao excluir (executando Rollback):", erro);
+                setCatalogoProdutos(backupCatalogo);
+              });
             }}
             encomendas={encomendasAdmin}
-            onAtualizarStatusEncomenda={(id, novoStatus) =>
-              setEncomendasAdmin((prev) =>
-                prev.map((e) => (e.id === id ? { ...e, status: novoStatus } : e))
-              )
-            }
+            onAtualizarStatusEncomenda={(id, novoStatus) => {
+              fetch(`http://localhost:8080/api/encomendas/${id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: novoStatus })
+              })
+              .then(() => {
+                setEncomendasAdmin((prev) =>
+                  prev.map((e) => (e.id === id ? { ...e, status: novoStatus } : e))
+                );
+              })
+              .catch(erro => console.error("Erro ao atualizar status:", erro));
+            }}
             configSite={configSite}
-            onSalvarConfigSite={(novosDados) => setConfigSite(novosDados)}
+            onSalvarConfigSite={(novosDados) => {
+              // 1. Backup para Rollback em caso de erro
+              const backupConfig = { ...configSite };
+
+              // 2. Atualização Otimista (reflete no site inteiro na hora)
+              setConfigSite(novosDados);
+
+              // 3. Persiste no banco de dados em segundo plano
+              fetch('http://localhost:8080/api/config', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(novosDados)
+              })
+              .then(res => {
+                if (!res.ok) throw new Error("Falha ao salvar configurações");
+              })
+              .catch(erro => {
+                console.error("Erro ao salvar config (executando Rollback):", erro);
+                setConfigSite(backupConfig);
+              });
+            }}
             resetTrigger={adminResetTrigger}
           />
         )}

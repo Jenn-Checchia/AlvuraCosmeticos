@@ -1,14 +1,12 @@
 export default function Header({
   onCartClick,
-  cartCount = 0, // <-- Adicione aqui
+  cartCount = 0,
   onNavigate,
   paginaAtual,
   usuarioLogado,
   onAuthClick,
   onLogout,
 }) {
-
-
   const irParaPagina = (e, destino, sectionId = null) => {
     e.preventDefault();
 
@@ -31,6 +29,22 @@ export default function Header({
   return (
     <header className="topbar">
       <nav className="topbar-left" aria-label="Navegação principal">
+        <a
+          href="#acervo"
+          className={`topbar-link ${paginaAtual === "acervo" ? "is-active" : ""}`}
+          onClick={(e) => irParaPagina(e, "acervo")}
+        >
+          Catálogo
+        </a>
+
+        <a
+          href="#encomendas"
+          className={`topbar-link ${paginaAtual === "encomendas" ? "is-active" : ""}`}
+          onClick={(e) => irParaPagina(e, "encomendas")}
+        >
+          Encomendas
+        </a>
+
         <a
           href="#faq"
           className={`topbar-link ${paginaAtual === "faq" ? "is-active" : ""}`}
@@ -150,7 +164,6 @@ export default function Header({
           </div>
         )}
 
-
         <button
           type="button"
           className="header-cart-btn"
@@ -158,26 +171,22 @@ export default function Header({
           aria-label="Abrir sacola de compras"
         >
           <svg
-              viewBox="0 0 24 24"
-              width="25"
-              height="25"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M4 8.5h16l1 11H3l1-11Z" />
-              <path d="M8 8.5V6a4 4 0 0 1 8 0v2.5" />
-            </svg>
-        {cartCount > 0 && (
-        <span className="cart-badge">{cartCount}</span>
-       )}
-      </button>
-          
+            viewBox="0 0 24 24"
+            width="25"
+            height="25"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M4 8.5h16l1 11H3l1-11Z" />
+            <path d="M8 8.5V6a4 4 0 0 1 8 0v2.5" />
+          </svg>
+          {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+        </button>
       </div>
-
     </header>
   );
 }

@@ -30,25 +30,33 @@ export default function EncomendasPage({ onSolicitarOrcamento, onVoltarAcervo })
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const mensagem = [
-      `Olá, Alvura! Gostaria de solicitar um orçamento para *Encomenda / Atacado*:`,
-      `• *Nome:* ${nome || "Não informado"}`,
-      `• *Ocasião:* ${ocasiao}`,
-      `• *Produto:* ${produtoInteresse}`,
-      `• *Quantidade estimada:* ${quantidade}`,
-      aromasSelecionados.length > 0
-        ? `• *Aromas escolhidos:* ${aromasSelecionados.join(", ")}`
-        : null,
-      dataEvento ? `• *Data prevista:* ${dataEvento}` : null,
-      personalizacao.trim()
-        ? `• *Detalhes / Personalização:* ${personalizacao.trim()}`
-        : null,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    // 1. Constrói o objeto JSON para o Banco de Dados
+    const dadosParaBanco = {
+      cliente: nome || "Não informado",
+      ocasiao: ocasiao,
+      produto: produtoInteresse,
+      quantidade: quantidade,
+      aromas: aromasSelecionados.join(", "),
+      dataEvento: dataEvento,
+      observacoes: personalizacao.trim(),
+      status: "Novo"
+    };
 
+    // 2. Constrói a mensagem de texto para o WhatsApp
+    const mensagemWhatsApp = [
+      `Olá, Alvura! Gostaria de solicitar um orçamento para *Encomenda / Atacado*:`,
+      `• *Nome:* ${dadosParaBanco.cliente}`,
+      `• *Ocasião:* ${dadosParaBanco.ocasiao}`,
+      `• *Produto:* ${dadosParaBanco.produto}`,
+      `• *Quantidade estimada:* ${dadosParaBanco.quantidade}`,
+      aromasSelecionados.length > 0 ? `• *Aromas escolhidos:* ${dadosParaBanco.aromas}` : null,
+      dadosParaBanco.dataEvento ? `• *Data prevista:* ${dadosParaBanco.dataEvento}` : null,
+      dadosParaBanco.observacoes ? `• *Detalhes / Personalização:* ${dadosParaBanco.observacoes}` : null,
+    ].filter(Boolean).join("\n");
+
+    // 3. Envia os DOIS dados para o App.jsx
     if (onSolicitarOrcamento) {
-      onSolicitarOrcamento(mensagem);
+      onSolicitarOrcamento(dadosParaBanco, mensagemWhatsApp);
     }
   };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/cart.css";
 
 export default function CartDrawer({
@@ -10,6 +10,9 @@ export default function CartDrawer({
   onClearCart,
   onFinalizarWhatsApp,
 }) {
+  const [enderecoEntrega, setEnderecoEntrega] = useState("");
+  const [erroEndereco, setErroEndereco] = useState(false);
+
   if (!isOpen) return null;
 
   const subtotal = itens.reduce(
@@ -17,15 +20,18 @@ export default function CartDrawer({
     0
   );
 
-  const metaFreteGratis = 150;
-  const faltaParaFrete = Math.max(0, metaFreteGratis - subtotal);
-  const progressoFrete = Math.min(100, (subtotal / metaFreteGratis) * 100);
-
   const formatarPreco = (valor) =>
     `R$ ${valor.toFixed(2).replace(".", ",")}`;
 
   const handleFinalizarPedido = () => {
     if (itens.length === 0) return;
+
+    // Validação do endereço
+    if (!enderecoEntrega.trim()) {
+      setErroEndereco(true);
+      return; // Impede o envio se o endereço estiver vazio
+    }
+    setErroEndereco(false);
 
     const linhasItens = itens.map(
       (item) =>
@@ -39,12 +45,11 @@ export default function CartDrawer({
       "",
       ...linhasItens,
       "",
+      `*Endereço de Entrega:*`,
+      `${enderecoEntrega.trim()}`,
+      "",
       `*Subtotal:* ${formatarPreco(subtotal)}`,
-      `*Frete:* ${
-        faltaParaFrete === 0
-          ? "Grátis (pedido acima de R$ 150)"
-          : "A calcular conforme CEP"
-      }`,
+      `*Frete:* A calcular no atendimento`,
     ].join("\n");
 
     if (onFinalizarWhatsApp) {
@@ -73,26 +78,6 @@ export default function CartDrawer({
             ✕
           </button>
         </header>
-
-        {/* Barra de Frete Grátis (Regra do FAQ) */}
-        <div className="cart-shipping-bar">
-          {faltaParaFrete > 0 ? (
-            <p>
-              Faltam <strong>{formatarPreco(faltaParaFrete)}</strong> para você
-              ganhar <strong>Frete Grátis</strong>
-            </p>
-          ) : (
-            <p className="shipping-unlocked">
-              Você desbloqueou <strong>Frete Grátis</strong> para todo o Brasil!
-            </p>
-          )}
-          <div className="shipping-progress-track">
-            <div
-              className="shipping-progress-fill"
-              style={{ width: `${progressoFrete}%` }}
-            />
-          </div>
-        </div>
 
         {/* Lista de Produtos */}
         <div className="cart-body">
@@ -187,15 +172,48 @@ export default function CartDrawer({
         {/* Rodapé e Resumo */}
         {itens.length > 0 && (
           <footer className="cart-footer">
-            <div className="cart-summary-row">
+            
+            {/* Campo de Endereço Adicionado Aqui */}
+            <div className="cart-address-box">
+              <label htmlFor="cart-address" style={{ display: "block", marginBottom: "8px", fontSize: "0.85rem", color: erroEndereco ? "#D32F2F" : "inherit" }}>
+                Endereço de entrega (Obrigatório)*
+              </label>
+              <textarea 
+                id="cart-address"
+                rows="2" 
+                placeholder="Rua, Número, Bairro, Cidade, CEP..."
+                value={enderecoEntrega}
+                onChange={(e) => {
+                  setEnderecoEntrega(e.target.value);
+                  if (erroEndereco && e.target.value.trim().length > 0) {
+                     setErroEndereco(false);
+                  }
+                }}
+                style={{ 
+                  width: "100%", 
+                  padding: "10px", 
+                  borderRadius: "4px", 
+                  border: erroEndereco ? "1px solid #D32F2F" : "1px solid #ccc",
+                  backgroundColor: erroEndereco ? "#FFEBEE" : "#fff",
+                  fontFamily: "inherit",
+                  resize: "vertical"
+                }}
+              />
+              {erroEndereco && (
+                <span style={{ color: "#D32F2F", fontSize: "0.75rem", marginTop: "4px", display: "block" }}>
+                  Por favor, informe o endereço para o cálculo do frete.
+                </span>
+              )}
+            </div>
+            {/* Fim do Campo de Endereço */}
+
+            <div className="cart-summary-row" style={{ marginTop: "16px" }}>
               <span>Subtotal</span>
               <strong>{formatarPreco(subtotal)}</strong>
             </div>
             <div className="cart-summary-row small">
               <span>Entrega</span>
-              <span>
-                {faltaParaFrete === 0 ? "Grátis" : "Calculado no atendimento"}
-              </span>
+              <span>Calculado no atendimento</span>
             </div>
 
             <button

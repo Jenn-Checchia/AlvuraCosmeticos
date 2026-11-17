@@ -73,18 +73,54 @@ export default function AdminPage({
     mostrarFeedback(`Categoria "${limpa}" criada com sucesso!`);
   };
 
-  const handleUploadImagemProduto = (e) => {
+  const handleUploadImagemProduto = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setFormProd((prev) => ({ ...prev, imagem: url }));
+
+    mostrarFeedback("Enviando imagem...");
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("http://localhost:8080/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Falha no upload");
+      
+      const data = await res.json();
+      setFormProd((prev) => ({ ...prev, imagem: data.url }));
+      mostrarFeedback("Imagem do produto carregada!");
+    } catch (error) {
+      console.error("Erro no upload:", error);
+      mostrarFeedback("Erro ao carregar a imagem.");
+    }
   };
 
-  const handleUploadImagemSite = (e, campo) => {
+  const handleUploadImagemSite = async (e, campo) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setFormSite((prev) => ({ ...prev, [campo]: url }));
+
+    mostrarFeedback("Enviando imagem...");
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("http://localhost:8080/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Falha no upload");
+      
+      const data = await res.json();
+      setFormSite((prev) => ({ ...prev, [campo]: data.url }));
+      mostrarFeedback("Imagem do site carregada!");
+    } catch (error) {
+      console.error("Erro no upload:", error);
+      mostrarFeedback("Erro ao carregar a imagem.");
+    }
   };
 
   const iniciarEdicaoProduto = (produto) => {
@@ -150,11 +186,10 @@ export default function AdminPage({
 
     if (editandoId !== null) {
       onAtualizarProduto({ ...dados, id: editandoId });
-      // Mantemos o mostrarFeedback original do React
+      mostrarFeedback("Produto atualizado com sucesso!");
     } else {
-      // Removemos o 'id: Date.now()'. O backend vai gerar o ID!
       onAdicionarProduto(dados);
-      // Mantemos o mostrarFeedback original do React
+      mostrarFeedback("Produto cadastrado no catálogo!");
     }
     cancelarEdicaoProduto();
   };
