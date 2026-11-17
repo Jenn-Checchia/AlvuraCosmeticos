@@ -1,5 +1,6 @@
 export default function Header({
   onCartClick,
+  cartCount = 0, // <-- Adicione aqui
   onNavigate,
   paginaAtual,
   usuarioLogado,
@@ -151,28 +152,32 @@ export default function Header({
 
 
         <button
-          className="topbar-cart"
           type="button"
+          className="header-cart-btn"
           onClick={onCartClick}
-          aria-label="Fazer pedido"
-          title="Fazer pedido pelo WhatsApp"
+          aria-label="Abrir sacola de compras"
         >
           <svg
-            viewBox="0 0 24 24"
-            width="25"
-            height="25"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M4 8.5h16l1 11H3l1-11Z" />
-            <path d="M8 8.5V6a4 4 0 0 1 8 0v2.5" />
-          </svg>
-        </button>
+              viewBox="0 0 24 24"
+              width="25"
+              height="25"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 8.5h16l1 11H3l1-11Z" />
+              <path d="M8 8.5V6a4 4 0 0 1 8 0v2.5" />
+            </svg>
+        {cartCount > 0 && (
+        <span className="cart-badge">{cartCount}</span>
+       )}
+      </button>
+          
       </div>
+
     </header>
   );
 }

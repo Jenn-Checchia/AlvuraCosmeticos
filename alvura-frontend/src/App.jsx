@@ -11,6 +11,7 @@ import ProdutoModal from "./components/ProdutoModal";
 import EncomendasPage from "./pages/EncomendasPage";
 import AuthModal from "./components/AuthModal";
 import AdminPage from "./pages/AdminPage";
+import CartDrawer from "./components/CartDrawer";
 // import { PRODUTOS_MOCK } from "./data/produtosMock";
 import { useState, useEffect } from 'react';
 
@@ -121,13 +122,89 @@ export default function App() {
   };
 
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
+
+  // No App.jsx:
+const [carrinhoAberto, setCarrinhoAberto] = useState(false);
+const [itensCarrinho, setItensCarrinho] = useState(() => {
+  const salvo = localStorage.getItem("alvura_carrinho");
+  return salvo ? JSON.parse(salvo) : [];
+});
+
+useEffect(() => {
+  localStorage.setItem("alvura_carrinho", JSON.stringify(itensCarrinho));
+}, [itensCarrinho]);
+
+const adicionarAoCarrinho = (produto, quantidade = 1, aromaSelecionado = null) => {
+  setItensCarrinho((prev) => {
+    const indexExistente = prev.findIndex(
+      (item) =>
+        item.id === produto.id &&
+        (item.aromaSelecionado || null) === (aromaSelecionado || null)
+    );
+
+    if (indexExistente > -1) {
+      const atualizado = [...prev];
+      atualizado[indexExistente].quantidade += quantidade;
+      return atualizado;
+    }
+
+    return [
+      ...prev,
+      {
+        ...produto,
+        quantidade,
+        aromaSelecionado,
+      },
+    ];
+  });
+  setCarrinhoAberto(true);
+};
+
+const atualizarQuantidadeCarrinho = (id, aromaSelecionado, novaQtd) => {
+  if (novaQtd <= 0) {
+    removerDoCarrinho(id, aromaSelecionado);
+    return;
+  }
+  setItensCarrinho((prev) =>
+    prev.map((item) =>
+      item.id === id && (item.aromaSelecionado || null) === (aromaSelecionado || null)
+        ? { ...item, quantidade: novaQtd }
+        : item
+    )
+  );
+};
+
+const removerDoCarrinho = (id, aromaSelecionado) => {
+  setItensCarrinho((prev) =>
+    prev.filter(
+      (item) =>
+        !(
+          item.id === id &&
+          (item.aromaSelecionado || null) === (aromaSelecionado || null)
+        )
+    )
+  );
+};
+
+const enviarMensagemWhatsApp = (mensagemCompleta) => {
+  window.open(
+    `https://wa.me/${configSite.whatsapp}?text=${encodeURIComponent(mensagemCompleta)}`,
+    "_blank"
+  );
+};
+
+const totalItensCarrinho = itensCarrinho.reduce(
+  (acc, item) => acc + item.quantidade,
+  0
+);
   
   return (
   <>
     <div className="page-wrapper">
 
         <Header
-          onCartClick={() => pedirWhatsApp("Olá! Gostaria de fazer um pedido.")}
+          onCartClick={() => setCarrinhoAberto(true)}
+          cartCount={totalItensCarrinho}
           onNavigate={(destino) => {
             setPaginaAtual(destino);
             if (destino === "admin") {
@@ -145,9 +222,9 @@ export default function App() {
 
     
       {paginaAtual === "faq" && (
-  <FaqPage perguntaInicial={faqPerguntaInicial} />
-)}
-      
+        <FaqPage perguntaInicial={faqPerguntaInicial} />
+      )}
+            
       {paginaAtual === "home" && (
         <>
           <HeroBanner
@@ -403,9 +480,15 @@ export default function App() {
                 <span className="selecao-tag">MAIS AMADO</span>
                 <button 
                   className="selecao-bag-btn" 
-                  onClick={() => pedirWhatsApp("Olá! Tenho interesse em: Combinações perfeitas (R$ 79,99)")}
+                  onClick={() => adicionarAoCarrinho({
+                    id: "home-combinacoes-perfeitas",
+                    nome: "Combinações perfeitas",
+                    preco: 79.99,
+                    tamanho: "Kit Completo",
+                    imagem: "/assets/products/cereja.png"
+                  })}
                   aria-label="Adicionar Combinações perfeitas"
-                >
+                  >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                     <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
                   </svg>
@@ -427,10 +510,16 @@ export default function App() {
                 />
                 <span className="selecao-tag">NOVO</span>
                 <button 
-                  className="selecao-bag-btn" 
-                  onClick={() => pedirWhatsApp("Olá! Tenho interesse no: Kit de Velas (R$ 132,99)")}
-                  aria-label="Adicionar Kit de Velas"
-                >
+                    className="selecao-bag-btn" 
+                    onClick={() => adicionarAoCarrinho({
+                      id: "home-kit-velas",
+                      nome: "Kit de Velas",
+                      preco: 132.99,
+                      tamanho: "Kit",
+                      imagem: "/assets/products/caixa.png"
+                    })}
+                    aria-label="Adicionar Kit de Velas"
+                  >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                     <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
                   </svg>
@@ -452,10 +541,16 @@ export default function App() {
                 />
                 <span className="selecao-tag">FAVORITO</span>
                 <button 
-                  className="selecao-bag-btn" 
-                  onClick={() => pedirWhatsApp("Olá! Tenho interesse em: Cuidados para pés (R$ 9,99)")}
-                  aria-label="Adicionar Cuidados para pés"
-                >
+                    className="selecao-bag-btn" 
+                    onClick={() => adicionarAoCarrinho({
+                      id: "home-cuidados-pes",
+                      nome: "Cuidados para pés",
+                      preco: 9.99,
+                      tamanho: "Unidade",
+                      imagem: "/assets/products/pes.png"
+                    })}
+                    aria-label="Adicionar Cuidados para pés"
+                  >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                     <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
                   </svg>
@@ -565,12 +660,8 @@ export default function App() {
 
         {paginaAtual === "acervo" && (
           <AcervoPage
-            produtos={catalogoProdutos} // <-- ADICIONE ESTA LINHA AQUI!
-            onAddToCart={(produto) =>
-              pedirWhatsApp(
-                `Olá! Gostaria de adicionar à sacola: ${produto.nome} (R$ ${produto.preco.toFixed(2).replace(".", ",")})`
-              )
-            }
+            produtos={catalogoProdutos}
+            onAddToCart={(produto) => adicionarAoCarrinho(produto)}
             onSelectProduto={setProdutoSelecionado}
             onAbrirEncomendas={() => {
               setPaginaAtual("encomendas");
@@ -851,12 +942,12 @@ export default function App() {
         produto={produtoSelecionado}
         onClose={() => setProdutoSelecionado(null)}
         onConfirmarPedido={(item) => {
-          const detalhesCustom = item.personalizacao
-            ? ` | Aroma: ${item.personalizacao.aroma} | Embalagem: ${item.personalizacao.embalagem}${item.personalizacao.observacao ? ` | Obs: ${item.personalizacao.observacao}` : ""}`
-            : "";
-          pedirWhatsApp(
-            `Olá! Gostaria de pedir: ${item.quantidade}x ${item.nome}${detalhesCustom}`
-          );
+          const aromaTexto = item.personalizacao
+            ? `${item.personalizacao.aroma} | Emb: ${item.personalizacao.embalagem}${item.personalizacao.observacao ? ` (${item.personalizacao.observacao})` : ""}`
+            : null;
+
+          adicionarAoCarrinho(item, item.quantidade || 1, aromaTexto);
+          setProdutoSelecionado(null);
         }}
       />
 
@@ -871,6 +962,18 @@ export default function App() {
         }}
       />
 
+      <CartDrawer
+        isOpen={carrinhoAberto}
+        onClose={() => setCarrinhoAberto(false)}
+        itens={itensCarrinho}
+        onUpdateQuantidade={atualizarQuantidadeCarrinho}
+        onRemoveItem={removerDoCarrinho}
+        onClearCart={() => setItensCarrinho([])}
+        onFinalizarWhatsApp={(mensagem) => {
+          enviarMensagemWhatsApp(mensagem);
+          setCarrinhoAberto(false);
+        }}
+      />
 
     </>
   );
