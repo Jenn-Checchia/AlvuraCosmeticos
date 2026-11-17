@@ -18,6 +18,25 @@ const TELEFONE_ALVURA = "5567999999999";
 
 export default function App() {
 
+    const navegarPara = (e, destino, sectionId = null) => {
+      e.preventDefault();
+    
+      setPaginaAtual(destino);
+    
+      if (destino === "home" && sectionId) {
+        setTimeout(() => {
+          document.getElementById(sectionId)?.scrollIntoView({
+            behavior: "smooth",
+          });
+        }, 100);
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    };
+  
   function pedirWhatsApp(itemOuTexto) {
     const nome = typeof itemOuTexto === 'string' ? itemOuTexto : `${itemOuTexto.nome} (R$ ${itemOuTexto.preco.toFixed(2).replace('.', ',')})`;
     const texto = `Olá, Alvura! Vi no catálogo e gostaria de pedir: ${nome}`;
@@ -32,6 +51,7 @@ export default function App() {
   const [authModalAberto, setAuthModalAberto] = useState(false);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
   const [catalogoProdutos, setCatalogoProdutos] = useState([]);
+  const [faqPerguntaInicial, setFaqPerguntaInicial] = useState(null);
 
   useEffect(() => {
       fetch('http://localhost:8080/api/produtos')
@@ -115,7 +135,9 @@ export default function App() {
         />
 
     
-      {paginaAtual === "faq" && <FaqPage />}
+      {paginaAtual === "faq" && (
+  <FaqPage perguntaInicial={faqPerguntaInicial} />
+)}
       
       {paginaAtual === "home" && (
       <>
@@ -687,39 +709,96 @@ export default function App() {
               </div>
             </div>
 
-            {/* Coluna 2: Descobrir */}
-            <div className="footer-links-col">
-              <h5>DESCOBRIR</h5>
-              <ul>
-                <li><a href="#catalogo">Catálogo</a></li>
-                <li><a href="#materias">Ingredientes</a></li>
-                <li><a href="#novidades">Novidades</a></li>
-              </ul>
-            </div>
+            
+              {/* Coluna 2: Descobrir */}
+              <div className="footer-links-col">
+                <h5>DESCOBRIR</h5>
+                <ul>
+                  <li>
+                    <a
+                      href="#acervo"
+                      onClick={(e) => navegarPara(e, "acervo")}
+                    >
+                      Catálogo
+                    </a>
+                  </li>
 
-            {/* Coluna 3: Alvura */}
-            <div className="footer-links-col">
-              <h5>ALVURA</h5>
-              <ul>
-                <li><a href="#origem">Nossa história</a></li>
-                <li><a href="#pilares">Compromissos</a></li>
-                <li><a href="#diario">Diário botânico</a></li>
-                <li><a href="#carreiras">Trabalhe conosco</a></li>
-              </ul>
-            </div>
+                  <li>
+                    <a
+                      href="#novidades"
+                      onClick={(e) => navegarPara(e, "home", "catalogo")}
+                    >
+                      Novidades
+                    </a>
+                  </li>
 
-            {/* Coluna 4: Cuidado */}
-            <div className="footer-links-col">
-              <h5>CUIDADO</h5>
-              <ul>
-                <li><a href="#contato" onClick={() => pedirWhatsApp("Olá, gostaria de falar com vocês")}>Fale conosco</a></li>
-                <li><a href="#entregas">Entregas e trocas</a></li>
-                <li><a href="#faq">Perguntas frequentes</a></li>
-                <li><a href="#reciclagem">Guia de reciclagem</a></li>
-              </ul>
-            </div>
+                  <li>
+                    <a
+                      href="#ingredientes"
+                      onClick={(e) => navegarPara(e, "home", "ingredientes")}
+                    >
+                      Diário botânico
+                    </a>
+                  </li>
+                </ul>
+              </div>
 
-            {/* Coluna 5: Atendimento */}
+              {/* Coluna 3: Cuidado */}
+              <div className="footer-links-col">
+                <h5>CUIDADO</h5>
+                <ul>
+                  <li>
+                    <a
+                      href="#contato"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        pedirWhatsApp("Olá, gostaria de falar com vocês");
+                      }}
+                    >
+                      Fale conosco
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#faq"
+                      onClick={(e) => {
+                        setFaqPerguntaInicial(1);
+                        navegarPara(e, "faq");
+                      }}
+                    >
+                      Entregas e trocas
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#faq"
+                      onClick={(e) => {
+                        setFaqPerguntaInicial(null);
+                        navegarPara(e, "faq");
+                      }}
+                    >
+                      Perguntas frequentes
+                    </a>
+                  </li>
+
+                  <li>
+                    <a
+                      href="#faq"
+                      onClick={(e) => {
+                        setFaqPerguntaInicial(2);
+                        navegarPara(e, "faq");
+                      }}
+                    >
+                      Guia de reciclagem
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+
+            {/* Coluna 4: Atendimento */}
             <div className="footer-links-col">
               <h5>ATENDIMENTO</h5>
               <p className="footer-email">oi@alvura.com.br</p>

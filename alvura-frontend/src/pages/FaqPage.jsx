@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/faq.css';
 
 
@@ -29,9 +29,15 @@ const faqs = [
   },
 ];
 
-export default function FaqPage() {
+export default function FaqPage({ perguntaInicial = null }) {
+
+  useEffect(() => {
+  setActiveIndex(perguntaInicial);
+}, [perguntaInicial]);
+
+
   // Permite abrir também com toque no celular, além do hover no computador
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(perguntaInicial);
 
   const toggleFaq = (index) => {
     setActiveIndex(activeIndex === index ? null : index);

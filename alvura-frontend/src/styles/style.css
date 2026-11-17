@@ -1207,7 +1207,7 @@ body {
 
 .footer-columns {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
+  grid-template-columns: 4fr 1fr 1fr 1fr 0fr;
   gap: 32px;
   padding-bottom: 64px;
   border-bottom: 1px solid rgba(250, 245, 235, 0.12);
@@ -1231,10 +1231,10 @@ body {
 }
 
 .footer-brand-col p {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: rgba(250, 245, 235, 0.6);
   line-height: 1.6;
-  max-width: 240px;
+  max-width: 300px;
   margin-bottom: 24px;
 }
 
