@@ -54,6 +54,9 @@ export default function AdminPage({
 
   // --- Estados da Edição de Dados do Site ---
   const [formSite, setFormSite] = useState(configSite);
+  useEffect(() => {
+    setFormSite(configSite);
+  }, [configSite]);
 
   const mostrarFeedback = (msg) => {
     setFeedback(msg);
@@ -750,6 +753,21 @@ export default function AdminPage({
               </label>
 
               <label className="adm-field">
+                <span>Horário de Atendimento</span>
+                <input
+                  type="text"
+                  value={formSite.horarioAtendimento || ""}
+                  onChange={(e) =>
+                    setFormSite({
+                      ...formSite,
+                      horarioAtendimento: e.target.value,
+                    })
+                  }
+                  placeholder="Seg–sex, das 9h às 18h"
+                />
+              </label>
+
+              <label className="adm-field">
                 <span>Cidade / Atelier (Rodapé)</span>
                 <input
                   type="text"
@@ -763,6 +781,20 @@ export default function AdminPage({
 
             <div className="site-editor-col">
               <h2>Textos &amp; Imagens Principais</h2>
+
+              <label className="adm-field">
+                <span>Título principal da Vitrine</span>
+                <input
+                  type="text"
+                  value={formSite.heroTitulo || ""}
+                  onChange={(e) =>
+                    setFormSite({
+                      ...formSite,
+                      heroTitulo: e.target.value,
+                    })
+                  }
+                />
+              </label>
 
               <label className="adm-field">
                 <span>Subtítulo da Vitrine (Hero Banner)</span>
@@ -785,6 +817,34 @@ export default function AdminPage({
                   }
                 />
               </label>
+                
+              <div className="adm-field">
+                <span>Imagem principal da Homepage (Hero)</span>
+
+                <div className="adm-image-box">
+                  <img
+                    src={formSite.imagemHero}
+                    alt="Prévia da imagem principal"
+                    className="adm-img-preview"
+                  />
+
+                  <div className="adm-image-controls">
+                    <label className="adm-upload-btn">
+                      Trocar imagem principal
+
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          handleUploadImagemSite(e, "imagemHero")
+                        }
+                        hidden
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
 
               <div className="adm-field">
                 <span>Imagem Destaque (Encomendas / Atelier)</span>

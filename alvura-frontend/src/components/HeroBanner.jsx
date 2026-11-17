@@ -1,4 +1,5 @@
-export default function HeroBanner({ onExplorar }) {
+
+export default function HeroBanner({ onExplorar, configSite }) {
   return (
     <section className="hero-grid">
       <div className="hero-left">
@@ -9,16 +10,13 @@ export default function HeroBanner({ onExplorar }) {
           </div>
 
           <h1>
-            Catálogo
+            {configSite?.heroTitulo || "Catálogo"}
             <span>Alvura</span>
           </h1>
 
           <p>
-            Beleza que nasce da Natureza.
-            <br />
-            Descubra uma nova forma de cuidar de si.
-            <br />
-            Descubra Alvura.
+            {configSite?.heroSubtitulo ||
+              "Beleza que nasce da Natureza. Descubra uma nova forma de cuidar de si."}
           </p>
 
           <button
@@ -41,9 +39,13 @@ export default function HeroBanner({ onExplorar }) {
         </div>
       </div>
 
-      <div className="hero-right">
+      {/* Área da imagem e elementos flutuantes */}
+      <div className="hero-image-wrapper">
         <img
-          src="/assets/products/vela cereja.png"
+          src={
+            configSite?.imagemHero ||
+            "/assets/products/vela cereja.png"
+          }
           alt="Produtos Alvura em uma composição com ingredientes naturais"
         />
 

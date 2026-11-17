@@ -98,7 +98,16 @@ export default function App() {
     instagram: "@alvura.cosmeticos",
     email: "oi@alvura.com.br",
     endereco: "Campo Grande, MS — Produção Artesanal",
-    heroSubtitulo: "Cosméticos botânicos feitos à mão com ingredientes brasileiros.",
+
+    // Atendimento
+    horarioAtendimento: "Seg–sex, das 9h às 18h",
+
+    // Hero
+    heroTitulo: "Catálogo",
+    heroSubtitulo: "Beleza que nasce da natureza! Descubra uma nova forma de cuidar de si. Descubra Alvura.",
+    imagemHero: "/assets/products/vela cereja.png",
+
+    // Outros conteúdos
     textoContato: "Fale com humanos!",
     imagemAtelier: "/assets/products/vela floral.png",
   });
@@ -140,9 +149,11 @@ export default function App() {
 )}
       
       {paginaAtual === "home" && (
-      <>
-
-        <HeroBanner onExplorar={rolarParaCatalogo} />
+        <>
+          <HeroBanner
+            onExplorar={rolarParaCatalogo}
+            configSite={configSite}
+          />
 
         <CategoryFilter onSelectCategoria={(cat) => pedirWhatsApp(`Linha de ${cat}`)} />
 
@@ -801,28 +812,39 @@ export default function App() {
             {/* Coluna 4: Atendimento */}
             <div className="footer-links-col">
               <h5>ATENDIMENTO</h5>
-              <p className="footer-email">oi@alvura.com.br</p>
+
+              <p className="footer-email">
+                {configSite.email}
+              </p>
+
               <p className="footer-hours">
-                Seg–sex, das 9h às 18h <br />
-                WhatsApp (11) 4002-2026
+                {configSite.horarioAtendimento}
+                <br />
+                WhatsApp {configSite.whatsapp}
               </p>
             </div>
-          </div>
 
           {/* Marca d'água gigante */}
           <div className="footer-watermark">ALVURA</div>
 
           {/* Barra Inferior de Créditos */}
+          
           <div className="footer-bottom-bar">
             <span>© 2026 ALVURA COSMÉTICOS. TODOS OS DIREITOS RESERVADOS.</span>
+
             <span>Web Design &amp; Development por Jennifer O. Checchia e Pedro Paulo O. Andrade</span>
+
             <div className="footer-legal-links">
               <a href="#privacidade">PRIVACIDADE</a>
               <a href="#termos">TERMOS</a>
             </div>
+
             <span>FEITO NO BRASIL</span>
           </div>
+
         </div>
+      </div>
+
       </footer>
 
       <ProdutoModal
